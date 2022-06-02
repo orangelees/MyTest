@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>车辆列表</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/pro.css}">
+    <script type="text/javascript" th:src="@{/js/jquery-1.8.2.min.js}"></script>
+</head>
+<body>
+<div id="header">
+    <div class="top">
+        <div class="wrap clearfix">
+            <div class="nav left dInline" id="headerMenu">
+                <a  th:href="@{/homepage}">首页</a>
+                <a href="about.html">关于ZOOM-ZOOM</a>
+                <a th:if="${session.username}!='admin'" id="personid">个人中心</a>
+                <a th:if="${session.username}=='admin'" id="personid">管理中心</a>
+                <input type="hidden" id="username" th:value="${session.username}">
+            </div>
+            <div th:switch="${session.username}">
+                <span class="right" id="rightMenuHtml" th:if="${session.username}==null">
+					<a th:href="@{/login}" class="b-login" id="b-login">登录</a>|<a th:href="@{/registerPage}" id="b-regist">注册</a>&nbsp;
+	                </span>
+            <span class="right" id="rightMenuHtml" th:if="${session.username}!=null" th:text="您好+${session.username}">
+	                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .s-form { margin-top:5px;}
+    .toselect{background-color: rgb(64, 100, 156); color:#FFF}
+</style>
+<div id="about">
+    <div class="mTags" style="margin-bottom:20px">
+        <div align="center" class="wrap"> <h1>我的收藏</h1> </div>
+    </div>
+    <div class="aWrap clearfix wrap">
+        <div class="left dInline aLeft">
+            <div class="carSou">
+                <div class="cs-list" th:each="c:${cars}">
+                    <ul>
+                        <li class="clearfix" style="position: relative;">
+                            <span class="carImg left dInline">
+                                <a th:href="@{/carQuery(carId=${c.carId})}" target="_blank">
+                                    <div class="car_bg"> </div>
+                                  <img th:src="${c.mainimg }"  width="300" />
+                                </a>
+                            </span>
+                                    <div class="carTxt right dInline" >
+                                        <h2><a href="maiche_show.html" target="_blank"  th:text="${c.model+c.edition+c.displacement}">没有数据</a></h2>
+                                        <p>
+                                            <span th:text="'出厂日期：'+${c.dateOfManufacture}">没有数据</span>
+                                            <span th:text="'轴距：'+${c.wheelbase}">没有数据</span>
+                                            <span th:text="'排量：'+${c.displacement}">没有数据</span>
+                                            <span th:text="'排放标准：'+${c.emissionStandard}">没有数据</span>
+                                        </p>
+                                        <div class="price clearfix" style="margin:8px 0;">
+                                            <div class="left dInline pNum" style="width:110px;">
+                                                <font>价格</font><br/>
+                                                <span class="num nBlue" th:text="${c.price}"></span>
+                                                <font> 万元</font>
+                                            </div>
+                                            <span class="num1 left" style="height:43px; width:450px;padding-top:10px;"><!-- <em>新车价：41.57万元(含32732元购置税)</em> --><br/>
+		                                        为您节省：18.77万元 <font>
+                                                    <a href="#" target="_blank">最低首付30%（6.84万），日还款约 164 元</a></font>
+		                                            <input type="hidden" class="CarValue_1165" value="{img:'/Uploads/PhotoGalley/2016-02-22/56caabd482cc0.JPG-thumb.JPG',id:'1165',price:'22.8',status:'加入对比',title:'奔驰C级 2013 款 1.8T 自动 C260 CGI时尚型',url:'/Cars/index/channel/2/id/1165.html'}" />
+		                                     </span>
+                                        </div>
+                                         <div class="cs_bt clearfix" style="padding-top:7px;">
+                                             <a th:href="@{/carQuery(carId=${c.carId})}" class="cs-q " id="Order_1165">查看详情</a>
+                                             <a  class="b-login" th:href="@{/delCollect(carId=${c.carId},username=${session.username})}" >取消收藏</a><!--th:href="@{/delCollect(carId=${c.carId},username=${session.username})}"    id="delcollect"-->
+                                             <input type="hidden" id="delCollectcarId" th:value="${c.carId}">
+                                             <span >已有188人关注此车</span>
+                                         </div>
+                                    </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="right dInline aRight">
+
+            <style type="text/css">
+                .sameCar{margin-top:20px;padding-bottom:15px;border:1px solid #ccc;border-top:none;}
+                .sameCar h4{font-size:14px;color:#fff;padding:10px;background:#3F7DDD;}
+                .sameCar ul{}
+                .sameCar li{line-height:20px; margin:0px 10px;border-bottom:1px solid #ccc;padding:5px 0;}
+                .nav_fixed{position:fixed;top:0px;z-index: 10;}
+                * html .nav_fixed{position:absolute;bottom:auto;top:expression(eval(document.documentElement.scrollTop));}
+                #header{position:absolute;}
+                #d_gd,.gd_box{width:253px;overflow:hidden;}
+
+            </style>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        $(window).scroll(function(){
+            /*var amNavTop= $('#d_gd').offset().top;*/
+            var b=$(window).scrollTop();
+            if(b>=amNavTop)
+            {
+                $('#d_gd').find('.gd_box').addClass('nav_fixed');
+            }
+            else
+            {
+                $('#d_gd').find('.gd_box').removeClass('nav_fixed');
+            };
+
+        });
+    })
+</script>
+
+
+<div id="footer">
+    <div class="foot-a1">
+        <div class="wrap">
+            <ul class="clearfix">
+                <li> <img src="images/db1.png"/>
+                    <p>365项检测认证</p>
+                </li>
+                <li> <img src="images/db2.png"/>
+                    <p>5000公里无需保养</p>
+                </li>
+                <li> <img src="images/db3.png"/>
+                    <p>1年或两万公里无忧质保</p>
+                </li>
+                <li> <img src="images/db4.png"/>
+                    <p>7天无忧退换</p>
+                </li>
+                <li> <img src="images/db5.png"/>
+                    <p> 置换有增值</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="foot-a" align="center">
+        <div class="wrap clearfix">
+            <div class="fDl left dInline "> <strong>我们承诺</strong>
+                <ul>
+                    <li><a href="#">365项严苛检测</a></li>
+                    <li><a href="#">5000公里无需保养</a></li>
+                    <li><a href="#">一年或两万公里质保</a></li>
+                    <!-- <li><a href="#">7天退换</a></li> -->
+                </ul>
+            </div>
+            <div class="fDl left dInline "> <strong>买车指南</strong>
+                <ul>
+                    <li><a href="#" target="_blank">买者注意事项</a></li>
+                    <li><a href="#" target="_blank">常见的陷阱</a></li>
+                    <li><a href="#" target="_blank">小窍门</a></li>
+                </ul>
+            </div>
+            <div class="fDl left dInline "> <strong>售后服务</strong>
+                <ul>
+                    <li><a href="#">24小时道路救援</a></li>
+                    <li><a href="#">定期上门维修保养服务</a></li>
+                    <li><a href="#">预约保养</a></li>
+                </ul>
+            </div>
+            <div class="fDl left dInline "> <strong>关于ZOOM车行</strong>
+                <ul>
+                    <li><a href="#" target="_blank">ZOOM优势</a></li>
+                    <li><a href="#" target="_blank">联系我们</a></li>
+                    <li><a href="#" target="_blank">评估团队</a></li>
+                </ul>
+            </div>
+            <div class="fDl left dInline "> <strong>ZOOM车行文化</strong>
+                <ul>
+                    <li><a href="#">中原文化</a></li>
+                    <li><a href="#">立天下</a></li>
+                    <li><a href="#">改变、规范、引领一方市场</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div style=margin-top:10px;> <!-- class="foot-b"   -->
+        <div align="center" >
+            Copyright © 2021 qcauto All Rights Reserved 苏州ZOOM—ZOOM汽车有限公司 版权所有 苏ICP备04101207号<br/>
+            地址：苏州市工业园区苏州中心店 服务热线：400-888-6666<br/>
+        </div>
+
+    </div>
+</div>
+<!--右侧内容的开始-->
+<div id="miniBus" style="right:-270px;">
+    <div class="mini-bar">
+        <div class="mini-barlist">
+            <ul>
+                <div class="mini-mi shopping">
+                    <a href="#">
+                        <i class="mini-ease" style="color: #e8e8e8">我的收藏</i>
+                    </a>
+                </div>
+                <div class="mini-mi shopping">
+                    <a th:href="@{/contrast}">
+                        <i class="mini-ease" style="color: #e8e8e8">对比车辆</i>
+                        <abbr id="Dbnumber" th:text="${session.contrastCarSize}">0</abbr>
+                    </a>
+                </div>
+            </ul>
+        </div>
+        <a class="mini-gotop"></a>
+        <a class="wx1"><img src="/images/wx_1.png"></a>
+        <div class="wmImg hide">
+            <img src="/images/wx_2.png">
+        </div>
+    </div>
+    <div class="mini-cont">
+    </div>
+</div>
+<!--右侧内容的结束-->
+<!--右侧搜索加入对比开始-->
+<script type="text/javascript" src="js/miniBar.js"></script>
+<script type="text/javascript" src="js/lg_reg.js"></script>
+
+<script type="text/javascript" src="js/search_car.js"></script>
+<script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js"></script>
+<!--右侧搜索加入对比结束-->
+<!--右侧滚动开始-->
+<script type="text/javascript">
+    $(function(){
+        $(window).scroll(function(){
+        })
+    })
+    jQuery(".txtMarquee-top").slide({mainCell:".bd ul",autoPlay:true,effect:"topMarquee",vis:5,interTime:50,trigger:"click"});
+</script>
+<!--右侧滚动结束-->
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-datetimepicker.css">
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script type="text/javascript">
+    $('.form_datetime').datetimepicker({
+        format: 'yyyy-mm',
+        language:"zh-CN",
+        startView: 3,
+        minView: 3,
+        autoclose:true
+
+    });
+
+</script>
+<script type="text/javascript" th:inline="javascript">
+    $("#personId").click(function () {
+        window.location.href="/personalPage";
+    })
+
+</script>
+
+</body>
+</html>

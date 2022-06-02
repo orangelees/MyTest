@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/hurst.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}"  media="screen">
+    <script type="text/javascript" th:src="@{/js/jquery-1.8.2.min.js}"></script>
+    <title>个人中心</title>
+</head>
+<body>
+<div id="header">
+    <div class="top">
+        <div class="wrap clearfix">
+            <div class="nav left dInline" id="headerMenu">
+                <a  th:href="@{/homepage}">首页</a><!-- class="on" -->
+                <a href="about.html">关于ZOOM-ZOOM</a>
+                <a th:if="${session.username}!='admin'" id="personid">个人中心</a>
+                <a th:if="${session.username}=='admin'" id="personid">管理中心</a>
+            </div>
+            <span class="right" id="rightMenuHtml">
+			</span>
+        </div>
+    </div>
+</div>
+<div id="about">
+    <div class="mebBox">
+        <div class="meb-cont clearfix wrap">
+            <div class="meb-right right dInline">
+                <div class="mr-detail">
+                    <div class="mr-tab clearfix">
+                        <a class="on">车辆管理</a>
+                    </div>
+                    <div class="me-box">
+                        <div class="me-dl" style="display:block;">
+                            <div class="me-one" id="me-o"><!--th:action="@{/addCar}"-->
+                                <form   enctype="multipart/form-data" method="post" name="form" id="form">
+                                    <!--<form th:action="@{/addCar}" enctype="multipart/form-data" method="post" name="form" id="form">-->
+                                    <!--<table class="login-items">
+                                        <tr>
+                                            <td><label>品牌</label></td>
+                                            <td><input class="input" type="text" th:value="${type}==1?'':${car?.brandName}" maxlength="32"  name="brandName" ></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label>型号</label></td>
+                                            <td><input class="input" type="text" th:value="${type}==1?'':${car?.model}" maxlength="16"  name="model"></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label>版本</label></td>
+                                            <td><input class="input" type="text" th:value="${type}==1?'':${car?.brandName}" maxlength="32"  name="brandName" ></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label>价格</label></td>
+                                            <td><input class="input" type="text" th:value="${type}==1?'':${car?.brandName}" maxlength="32"  name="brandName" ></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label>车型</label></td>
+                                            <td><input class="input" type="text" th:value="${type}==1?'':${car?.brandName}" maxlength="32"  name="brandName" ></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label>颜色</label></td>
+                                            <td><input class="input" type="text" th:value="${car?.brandName}" maxlength="32"  name="brandName" ></td>
+                                        </tr>
+                                        <tr>
+                                            <td><label>主要展示照片</label></td>
+                                            <td><input class="input" type="text" th:value="${car?.mainimg}" maxlength="16"  name="mainimg"></td>
+
+                                        </tr>
+                                    </table>-->
+                                    <ul class="login-items">
+                                        <li>
+                                            <label>品牌</label>
+                                            <!--<input class="input" type="text" th:value="${car?.brandName}" maxlength="32"  name="brandName" >-->
+                                            <input class="input" type="text" th:value="${type}==1?'':${car?.brandName}" maxlength="32"  name="brandName" >
+                                        </li>
+                                        <li>
+                                            <label>型号</label>
+                                            <input class="input" type="text" th:value="${type}==1?'':${car?.model}" maxlength="16"  name="model">
+                                        </li>
+                                        <li>
+                                            <label>版本</label>
+                                            <input class="input" type="text" th:value="${type}==1?'':${car?.edition}" maxlength="16"  name="edition">
+                                        </li>
+                                        <li>
+                                            <label>价格</label>
+                                            <input class="input" type="text" th:value="${type}==1?'':${car?.price}" maxlength="16"  name="price">
+                                        </li>
+                                        <li>
+                                            <label>车型</label>
+                                            <input class="input" type="text" th:value="${type}==1?'':${car?.carType}" maxlength="16"  name="carType">
+                                        </li>
+                                        <li>
+                                            <label>颜色</label>
+                                            <input class="input" type="text" th:value="${car?.color}" maxlength="16"  name="color">
+                                        </li>
+                                        <li>
+                                            <label>排量</label>
+                                            <input class="input" type="text" th:value="${car?.displacement}" maxlength="16"  name="displacement">
+                                        </li>
+                                        <li>
+                                            <label>排放标准</label>
+                                            <input class="input" type="text" th:value="${car?.emissionStandard}" maxlength="16"  name="emissionStandard">
+                                        </li>
+                                        <li>
+                                            <label>出厂日期</label>
+                                            <input class="input" type="text" th:value="${car?.dateOfManufacture}" maxlength="16"  name="dateOfManufacture">
+                                        </li>
+                                        <li>
+                                            <label>长宽高</label>
+                                            <input class="input" type="text" th:value="${car?.longwidehigh}" maxlength="16"  name="longwidehigh">
+                                        </li>
+                                        <li>
+                                            <label>轴距</label>
+                                            <input class="input" type="text" th:value="${car?.wheelbase}" maxlength="16"  name="wheelbase">
+                                        </li>
+                                        <li>
+                                            <label>轮胎规格</label>
+                                            <input class="input" type="text" th:value="${car?.tire}" maxlength="16"  name="tire">
+                                        </li>
+                                        <li>
+                                            <label>油箱容积</label>
+                                            <input class="input" type="text" th:value="${car?.tankVolume}" maxlength="16"  name="tankVolume">
+                                        </li>
+                                        <li>
+                                            <label>质量</label>
+                                            <input class="input" type="text" th:value="${car?.quality}" maxlength="16"  name="quality">
+                                        </li>
+                                        <!--<li>
+                                            <img align="center" th:src="${car.img1}" width="100px" height="100px">
+                                        </li>-->
+                                        <li>
+                                            <label>展示照片1</label>
+                                            <input  type="file"    name="file">
+                                            <input class="input" type="hidden" th:value="${car?.img1}" maxlength="16"  name="img1">
+                                        </li>
+                                        <li>
+                                            <label>展示照片2</label>
+                                            <input  type="file"    name="file">
+                                            <input class="input" type="hidden" th:value="${car?.img2}" maxlength="16"  name="img2">
+                                        </li>
+                                        <li>
+                                            <label>展示照片3</label>
+                                            <input  type="file"    name="file" >
+                                            <input class="input" type="hidden" th:value="${car?.img3}" maxlength="16"  name="img3">
+                                        </li>
+                                        <li>
+                                            <label>展示照片4</label>
+                                            <input  type="file"    name="file"  >
+                                            <input class="input" type="hidden" th:value="${car?.img4}" maxlength="16"  name="img4">
+                                        </li>
+                                        <li>
+                                            <label>展示照片5</label>
+                                            <input  type="file"    name="file" >
+                                            <input class="input" type="hidden" th:value="${car?.img5}" maxlength="16"  name="img5">
+                                        </li>
+                                        <li>
+                                            <label>展示照片6</label>
+                                            <input  type="file"    name="file" >
+                                            <input class="input" type="hidden" th:value="${car?.img6}" maxlength="16"  name="img6">
+                                        </li>
+                                        <li>
+                                            <label>主要展示照片</label>
+                                            <input  type="file"    name="file" >
+                                            <input class="input" type="hidden" th:value="${car?.mainimg}" maxlength="16"  name="mainimg">
+                                        </li>
+                                        <li>
+                                            <label>车辆ID</label>
+                                            <input class="input" type="text" th:value="${car?.carId}" maxlength="16"  name="carId">
+                                        </li>
+                                        <li>
+                                            <div class="login-button">
+                                                <!--<input type="button"  value="提&nbsp;&nbsp;&nbsp;&nbsp;交" class="fM" id="butId" />-->
+                                                <input type="submit"  th:value="${type}==1?'增&nbsp;&nbsp;&nbsp;&nbsp;加':'提&nbsp;&nbsp;&nbsp;&nbsp;交'" class="fM" th:id="${type}==1?'addId':'butId'" />
+                                            </div>
+                                        </li>
+                                    </ul>
+                                   <!-- </form>-->
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/js/miniBar.js}"></script>
+<script type="text/javascript" src="js/lg_reg.js"></script>
+<script type="text/javascript" src="js/smooth-scroll.js"></script>
+<script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js"></script>
+<script  src="js/jquery-1.11.0.min.js"></script>
+<script  src="js/bootstrap.min.js"></script>
+<script  src="js/bootstrap-datetimepicker.min.js"></script>
+<script  src="js/bootstrap-datetimepicker.zh-CN.js"></script>
+<!--<script  type="text/javascript" src="js/jquery.validate.min.js"></script>
+<script  type="text/javascript" src="js/messages_zh.min.js"></script>-->
+
+
+
+<script type="text/javascript" src="js/CarLoad.js"></script>
+<!--图片切换-->
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" th:inline="javascript">
+    /*$("#butId").click(function () {
+        $.ajax({
+            type:"POST",
+            url:"/updateCar",
+            dataType:"json",
+            data:$("#form").serialize(),
+            success:function (data) {
+                if (data>0){
+                    alert("修改车辆信息成功！");
+                }else {
+                    alert("修改车辆信息失败！");
+                }
+            }
+        });
+        return false;
+    })*/
+
+    /*$("#addId").click(function () {
+       $.ajax({
+            type:"POST",
+            url:"/addCar",
+            dataType:"json",
+            data:$("#form").serialize(),
+            success:function (data) {
+                if (data>0){
+                    alert("添加车辆信息成功！");
+                }else {
+                    alert("添加车辆信息失败！");
+                }
+            }
+
+        });
+        return false;
+    })*/
+
+    $("#addId").click(function () {
+       /* var formData = new formData($(#"form")[0]);*/
+        $.ajax({
+            type:"POST",
+            url:"/addCar",
+            dataType:"json",
+            data:new FormData($('#form')[0]),/*,*/
+            processData: false,
+            contentType: false,
+            success:function (data) {
+                if (data>0){
+                    alert("车辆信息添加成功！");
+                }else {
+                    alert("车辆信息添加失败！");
+                }
+            }
+
+        });
+        return false;
+    });
+
+    $("#butId").click(function () {
+        $.ajax({
+            type:"POST",
+            url:"/updateCar",
+            dataType:"json",
+            data:new FormData($('#form')[0]),
+            processData: false,
+            contentType: false,
+            success:function (data) {
+                if (data>0){
+                    alert("车辆信息修改成功！");
+                }else {
+                    alert("车辆信息修改失败！");
+                }
+            }
+        });
+        return false;
+    })
+</script>
+</body>
+</html>

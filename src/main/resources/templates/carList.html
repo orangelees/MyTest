@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>车辆列表</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/pro.css}">
+    <script type="text/javascript" th:src="@{/js/jquery-1.8.2.min.js}"></script>
+</head>
+<body>
+<div id="header">
+    <div class="top">
+        <div class="wrap clearfix">
+            <div class="nav left dInline" id="headerMenu">
+                <a  th:href="@{/homepage}">首页</a>
+                <a href="about.html">关于ZOOM-ZOOM</a>
+                <a th:if="${session.username}!='admin'" id="personid">个人中心</a>
+                <a th:if="${session.username}=='admin'" id="personid">管理中心</a>
+            </div>
+            <div th:switch="${session.username}">
+                <span class="right" id="rightMenuHtml" th:if="${session.username}==null">
+					<a th:href="@{/login}" class="b-login" id="b-login">登录</a>|<a th:href="@{/registerPage}" id="b-regist">注册</a>&nbsp;
+	                </span>
+                <span class="right" id="rightMenuHtml" th:if="${session.username}!=null" th:text="您好+${session.username}">
+	                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .s-form { margin-top:5px;}
+    .toselect{background-color: rgb(64, 100, 156); color:#FFF}
+</style>
+<div id="about">
+    <div class="mTags" style="margin-bottom:20px">
+
+        <div align="center" class="wrap">
+            <!--<c:if test="${empty type }">
+                <h1>您搜索出如下结果</h1>
+            </c:if>
+            <c:if test="${not empty type }">
+                <h1>“${type}”车辆的搜索结果如下</h1>
+            </c:if>-->
+
+        </div>
+    </div>
+    <div class="aWrap clearfix wrap">
+        <div class="left dInline aLeft">
+            <div class="carSou">
+
+                <div class="cs-list">
+                    <ul th:each="car:${cars}">
+                        <li class="clearfix" style="position: relative;">
+                            <span class="carImg left dInline">
+		                         <a th:href="@{/carQuery(carId=${car.carId})}" target="_blank">
+		                        <div class="car_bg"> </div>
+		                        <img th:src="${car.mainimg}"  width="300" />
+                                 </a>
+                            </span>
+                            <div class="carTxt right dInline">
+                                <h2><a href="maiche_show.html" target="_blank" th:text="${car.model+'&nbsp;'+car.edition+'&nbsp;'+car.displacement}">没有数据</a></h2>
+                                <p>
+                                    <span th:text="'出厂日期：'+${car.dateOfManufacture}">没有数据</span>
+                                    <span th:text="'轴距：'+${car.wheelbase}">没有数据</span>
+                                    <span th:text="'排量：'+${car.displacement}">没有数据</span>
+                                    <span th:text="'排放标准：'+${car.emissionStandard}">没有数据</span>
+                                </p>
+                                        <div class="price clearfix" style="margin:8px 0;">
+                                            <div class="left dInline pNum" style="width:110px;"> <font>价格</font><br/>
+                                                <span class="num nBlue" th:text="${car.price}"> 没有数据</span><font> 万元</font>
+                                            </div>
+                                            <span class="num1 left" style="height:43px; width:450px;padding-top:10px;"><br/>
+		                                        为您节省：18.77万元 <font>
+                                                    <a href="#" target="_blank">最低首付30%（6.84万），日还款约 164 元</a></font>
+		                                            <input type="hidden" class="CarValue_1165" value="{img:'/Uploads/PhotoGalley/2016-02-22/56caabd482cc0.JPG-thumb.JPG',id:'1165',price:'22.8',status:'加入对比',title:'奔驰C级 2013 款 1.8T 自动 C260 CGI时尚型',url:'/Cars/index/channel/2/id/1165.html'}" />
+		                                    </span>
+                                        </div>
+                                        <div class="cs_bt clearfix" style="padding-top:7px;">
+                                            <a th:href="@{/carQuery(carId=${car.carId})}" class="cs-q " id="Order_1165">查看详情</a>
+                                            <!--<a href="${pageContext.request.contextPath}/contrast?brandname=${car.brandName}" onclick="balance('1165')" class="balance_1165">加入对比</a>-->
+                                            <!--  <a href="javascript:void(0)" class="b-login" id="collection_1165" >收藏</a> -->
+                                            <span>已有188人关注此车</span>
+                                        </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+        <div class="right dInline aRight">
+            <!--<div class="pgBox">
+                      <a class="userImg" href="#">
+                          <img src="images/user.gif"/>
+                      </a>
+                      <h2>资深评估团队<br/>确保车源品质</h2>
+                      <p>亿金为您车辆提供免费<br/>评估与检查</p>
+                      <a href="#" class="pgBtn">马上评估</a>
+                  </div>-->
+
+
+            <!-- <div class="dBox">
+                    <link rel="stylesheet" type="text/css" href="css/alert.css">
+                    <style type="text/css">
+            input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {color: #000;}
+            input:-moz-placeholder, textarea:-moz-placeholder {color:#000;}
+            input::-moz-placeholder, textarea::-moz-placeholder {color:#000;}
+            input:-ms-input-placeholder, textarea:-ms-input-placeholder {color:#000;}
+            </style>
+                    <form class="dForm" name="dForm" id="dForm" method="post" enctype="multipart/form-data" onsubmit="return cleckform();">
+                      <h2>私人订制</h2>
+                      <p>专业车辆顾问为您服务</p>
+                      <table>
+                        <tr>
+                          <td><select class="Smakeid" name="makeid"  id="" placeholder="所属品牌">
+                              <option value=""> 选择品牌（必选）</option>
+                              <option value="9" > A 奥迪</option>
+                              <option value="92" > A 阿尔法·罗密欧</option>
+                              <option value="97" > A 阿斯顿·马丁</option>
+                              <option value="184" > B 保斐利</option>
+
+                            </select></td>
+                        </tr>
+                        <tr>
+                          <td><div id="xlselect">
+                              <select name="modeid">
+                                <option>选择车系(必选)</option>
+                              </select>
+                            </div></td>
+                        </tr>
+                        <tr>
+                          <td><select name="years">
+                              <option value="不限">选择使用年限</option>
+                              <option value="1年以内">1年以内</option>
+                              <option value="2年以内">2年以内</option>
+                              <option value="3年以内">3年以内</option>
+                              <option value="3-5年">3-5年</option>
+                              <option value="5年以上">5年以上</option>
+                            </select></td>
+                        </tr>
+                        <tr>
+                          <td><input type="text" name="dprice" placeholder="最少预算" value="" class="cInput" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />
+                            <input type="text" name="hprice" placeholder="最多预算" value="" class="cInput" onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')" />
+                            万元 </td>
+                        </tr>
+                        <tr>
+                          <td><input type="text" value="" placeholder="计划购买时间" style="width:95%" class="form_datetime cInput" name="buytime" data-date-format="yyyy-mm"></td>
+                        </tr>
+                        <tr>
+                          <td><textarea name="content" placeholder="其他要求（例如车身和内饰颜色、行驶里程要求等）"></textarea></td>
+                        </tr>
+                        <tr>
+                          <td><input id="input-phone" type="hidden" name="mobile" value="" />
+                            <input id="input-verify" type="hidden" name="verify" value="" />
+                            <input type="button" value="提交需求" class="sBtn" style=" padding:0;" id="sendMESS" /></td>
+                        </tr>
+                      </table>
+                    </form>
+                    <div id="popBoxYzm" style="display:none">
+                      <div class="popForm">
+                        <div class="p-detail">
+                          <form action="" enctype="multipart/form-data" method="post" name="yzmcheck" id="yzmcheck">
+                            <ul class="login-items" style="width:100%">
+                              <li>
+                                <label>手机号</label>
+                                <input type="text" value="" maxlength="32"  name="mobile" id="shoujihao" style="width:120px">
+                                <input type="checkbox" name="remembermobile" style=" width:auto; margin:10px 20px 0" id="remembermobile" />
+                                <label>记住此号</label>
+                              </li>
+                              <li>
+                                <label>验证码</label>
+                                <input type="text" value="" maxlength="16"  name="verify" id="yanzhengma" style="width:120px; margin-right:20px;">
+                                <img src="../../../Admin/Login/buildVerify.html" id="yzcode" width="100" height="42" alt="点击切换" onclick="this.src='../../../Admin/Login/buildVerify.html'"> </li>
+                            </ul>
+                            <div class="login-button">
+                              <input type="button"  value="立即提交" class="fM" onclick="sendtosend()" style="line-height:20px" />
+                            </div>
+                          </form>
+                        </div>
+                        <a class="closed">×</a> </div>
+                    </div>
+                    <input type="hidden" id="ckmobile" value="1" />
+                    <script type="text/livescript">
+            $("#sendMESS").live("click",function(){
+                var ckmobile=$("#ckmobile").val();
+                if(ckmobile){
+                    $("#yzcode").attr("src",'/Admin/Login/buildVerify');
+                    $('#popBoxYzm').fadeIn();
+                }else{
+                    sendtosend();
+                }
+            });
+            function sendtosend(){
+                if ($('#remembermobile').attr('checked')){
+                    remember = 2;
+                }else{
+                    remember='';
+                }
+                var mobile=$("#shoujihao").val();
+                var verify=$("#yanzhengma").val();
+                var re = /^(0|86|17951)?(13[0-9]|15[012356789]|17[678]|18[0-9]|14[57])[0-9]{8}$/;
+                if(!re.exec(mobile)){
+                    alert("手机号格式不正确");
+                    $("#shoujihao").focus();
+                    return false;
+                }else{
+                    $("#input-phone").val(mobile);
+                    $("#input-verify").val(verify);
+                    $('#popBoxYzm').fadeOut();
+                    $('#dForm').submit();
+                }
+            }
+            </script>
+                  </div> -->
+            <!--  <div id="d_gd">
+               <div class="gd_box">
+                 <div class="dWx"> <a href="javascript:;"><img src="images/5678b0dbe039f.jpg-thumb.jpg"/></a> </div>
+                 <div class="txtMarquee-top">
+                   <div class="sameCar bd">
+                     <h4>在途同类型车源<a style="float:right; color:#FFF" href="2/sta/B/ord/STA/url_form/.html">更多>></a></h4>
+                     <ul class="infoList">
+                       <li> <a href="2/id/1175.html">宝马X3(进口) 2014 款 2.0T 自动 xDrive28i X设计套装</a> </li>
+                       <li> <a href="2/id/1174.html">宝马3系 2014 款 2.0T 自动 320i时尚型</a> </li>
+                       <li> <a href="2/id/1173.html">宝马3系GT(进口) 2014款 2.0T 自动 320i 领先型</a> </li>
+                       <li> <a href="2/id/1172.html">奔驰E级 2015 款 2.0T 自动 E260L运动型(改款）</a> </li>
+                       <li> <a href="2/id/1171.html">别克 昂科威 2014 款 2.0T 自动 28T四驱全能运动旗舰型</a> </li>
+                       <li> <a href="2/id/1170.html">奥迪A6L 2014 款 2.0T  TFSI舒适型</a> </li>
+                       <li> <a href="2/id/1167.html">大众 Tiguan 2011 款 2.0T 自动 TSI R-Line</a> </li>
+                       <li> <a href="2/id/1169.html">宝马5系 2014 款 2.0T 自动 528Li豪华设计套装</a> </li>
+                       <li> <a href="2/id/1168.html">宝马X3(进口) 2013 款 2.0T 自动 xDrive20i豪华型(改款)</a> </li>
+                       <li> <a href="2/id/1166.html">宝马5系 2014 款 2.0T 自动 525Li豪华设计套装</a> </li>
+                       <li> <a href="2/id/1091.html">宝马X5(进口) 2013款 3.0T xDrive35i（美规）</a> </li>
+                       <li> <a href="2/id/1090.html">路虎 揽胜 2014 款 3.0T 自动 V6 SC Vogue</a> </li>
+                       <li> <a href="2/id/1089.html">宝马5系 2013 款 2.0T 自动 525Li领先型</a> </li>
+                     </ul>
+                   </div>
+                 </div>
+               </div>
+             </div> -->
+            <style type="text/css">
+                .sameCar{margin-top:20px;padding-bottom:15px;border:1px solid #ccc;border-top:none;}
+                .sameCar h4{font-size:14px;color:#fff;padding:10px;background:#3F7DDD;}
+                .sameCar ul{}
+                .sameCar li{line-height:20px; margin:0px 10px;border-bottom:1px solid #ccc;padding:5px 0;}
+                .nav_fixed{position:fixed;top:0px;z-index: 10;}
+                * html .nav_fixed{position:absolute;bottom:auto;top:expression(eval(document.documentElement.scrollTop));}
+                #header{position:absolute;}
+                #d_gd,.gd_box{width:253px;overflow:hidden;}
+
+            </style>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        $(window).scroll(function(){
+            /*var amNavTop= $('#d_gd').offset().top;*/
+            var b=$(window).scrollTop();
+            if(b>=amNavTop)
+            {
+                $('#d_gd').find('.gd_box').addClass('nav_fixed');
+            }
+            else
+            {
+                $('#d_gd').find('.gd_box').removeClass('nav_fixed');
+            };
+
+        });
+    })
+</script>
+
+
+<div id="footer">
+    <div class="foot-a1">
+        <div class="wrap">
+            <ul class="clearfix">
+                <li> <img src="images/db1.png"/>
+                    <p>365项检测认证</p>
+                </li>
+                <li> <img src="images/db2.png"/>
+                    <p>5000公里无需保养</p>
+                </li>
+                <li> <img src="images/db3.png"/>
+                    <p>1年或两万公里无忧质保</p>
+                </li>
+                <li> <img src="images/db4.png"/>
+                    <p>7天无忧退换</p>
+                </li>
+                <li> <img src="images/db5.png"/>
+                    <p> 置换有增值</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="foot-a" align="center">
+        <div class="wrap clearfix">
+            <div class="fDl left dInline "> <strong>我们承诺</strong>
+                <ul>
+                    <li><a href="#">365项严苛检测</a></li>
+                    <li><a href="#">5000公里无需保养</a></li>
+                    <li><a href="#">一年或两万公里质保</a></li>
+                    <!-- <li><a href="#">7天退换</a></li> -->
+                </ul>
+            </div>
+            <div class="fDl left dInline "> <strong>买车指南</strong>
+                <ul>
+                    <li><a href="#" target="_blank">买者注意事项</a></li>
+                    <li><a href="#" target="_blank">常见的陷阱</a></li>
+                    <li><a href="#" target="_blank">小窍门</a></li>
+                </ul>
+            </div>
+            <div class="fDl left dInline "> <strong>售后服务</strong>
+                <ul>
+                    <li><a href="#">24小时道路救援</a></li>
+                    <li><a href="#">定期上门维修保养服务</a></li>
+                    <li><a href="#">预约保养</a></li>
+                </ul>
+            </div>
+            <div class="fDl left dInline "> <strong>关于ZOOM车行</strong>
+                <ul>
+                    <li><a href="#" target="_blank">ZOOM优势</a></li>
+                    <li><a href="#" target="_blank">联系我们</a></li>
+                    <li><a href="#" target="_blank">评估团队</a></li>
+                </ul>
+            </div>
+            <div class="fDl left dInline "> <strong>ZOOM车行文化</strong>
+                <ul>
+                    <li><a href="#">中原文化</a></li>
+                    <li><a href="#">立天下</a></li>
+                    <li><a href="#">改变、规范、引领一方市场</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div style=margin-top:10px;> <!-- class="foot-b"   -->
+        <div align="center" >
+            Copyright © 2021 qcauto All Rights Reserved 苏州ZOOM—ZOOM汽车有限公司 版权所有 苏ICP备04101207号<br/>
+            地址：苏州市工业园区苏州中心店 服务热线：400-888-6666<br/>
+        </div>
+
+    </div>
+</div>
+
+
+<div id="miniBus" style="right:-270px;">
+    <div class="mini-bar">
+        <div class="mini-barlist">
+            <ul>
+                <div class="mini-mi shopping">
+                    <a type="s" id="cid"  onclick="collect()">
+                        <input type="hidden" id="username" th:value="${session.username}">
+                        <i class="mini-ease" style="color: #e8e8e8">我的收藏</i>
+                    </a>
+                    <li class="callItem"></li>
+                </div>
+                <div class="mini-mi shopping">
+                    <a th:href="@{/contrast}">
+                        <i class="mini-ease" style="color: #e8e8e8">对比车辆</i>
+                        <abbr id="Dbnumber" th:text="${session.contrastCarSize}">0</abbr>
+                    </a>
+                </div>
+            </ul>
+        </div>
+        <a class="mini-gotop"></a> <a class="wx1"><img src="images/wx_1.png"></a>
+        <div class="wmImg hide"> <img src="images/wx_2.png"> </div>
+    </div>
+    <div class="mini-cont">
+        <div class="mini-contlist">
+            <div class="mini-ni">
+                <div class="mini-h clearfix"> <a class="mini-close mini-ease lf-fl"></a> <span class="lf-fr"><code>最近浏览</code></span> </div>
+                <div class="miList" id="Liulan">
+                    <ul>
+                    </ul>
+                </div>
+            </div>
+            <div class="mini-ni">
+                <div class="mini-h clearfix"> <a class="mini-close mini-ease lf-fl"></a> <span class="lf-fr"><code>我的收藏</code></span> </div>
+                <div class="miList" id="shoucang">
+                    <ul>
+                    </ul>
+                    <a  href="javascript:void(0)" class="mini-fav b-login">查看更多收藏</a> </div>
+            </div>
+            <!--<div class="mini-ni">
+                      <div class="mini-h clearfix">
+                          <a class="mini-close mini-ease lf-fl"></a>
+                          <span class="lf-fr"><code>在线客服</code></span>
+                      </div>
+                  </div>-->
+            <div class="mini-ni" id="shopping">
+                <div class="mini-h clearfix"> <a class="mini-close mini-ease lf-fl"></a> <span class="lf-fr"><code>对比车辆</code></span> <span class="lf-fr" style="margin:auto 10px; font-size:26px; font-weight:bolder" id="deletealldb"><a><code>×</code></a></span> </div>
+                <div class="miList" id="Carduibi">
+                    <ul>
+                    </ul>
+                    <a href="#" class="mini-fav">立即对比</a> </div>
+            </div>
+        </div>
+    </div>
+    <div class="lf-view" id="lf-view">
+        <form onsubmit="return Lmessage();" enctype="multipart/form-data" method="post" name="leaveMess" id="leaveMess">
+            <b>您对我们的看法~</b>
+            <div>
+                <textarea placeholder="您的声音对我们很重要哟(必填)~" name="bankAuthSrc"></textarea>
+            </div>
+            <div> <a id="viewSubmit" onclick="$('#leaveMess').submit()"></a>
+                <input type="text" placeholder="请留下您的手机号码(必填)" id="viewAbout" name="mobile" />
+            </div>
+        </form>
+        <a id="viewClose"></a> <i id="viewIcon"></i>
+        <p id="viewSign"></p>
+    </div>
+</div>
+
+
+
+<div id="popBox">
+    <div class="popCont"> <a class="p_closed">关闭</a>
+        <div class="p-tab"> <a>会员登录<i></i></a><a>会员注册<i></i></a> </div>
+        <div class="p-detail">
+            <div class="p-dl">
+                <form onsubmit="return check();" enctype="multipart/form-data" method="post" name="form" id="form">
+                    <ul class="login-items">
+                        <li>
+                            <label>用户名(手机号)</label>
+                            <input class="input" type="text" value="" maxlength="32"  name="username" placeholder="请输入您的手机号">
+                        </li>
+                        <li>
+                            <label>密码</label>
+                            <input class="input" type="password" value="" maxlength="16"  name="password">
+                        </li>
+                    </ul>
+                    <div class="login-check">
+                        <input type="checkbox" name="checkbox" style=" width:auto;" />
+                        <label>记住我</label>
+                        <a href="../../../Meet/editPass">忘记登录密码？</a> </div>
+                    <div class="login-button">
+                        <input type="hidden" value="" name="carid" class="ordercarid" />
+                        <input type="hidden" value="" name="carstatus" class="orderstatus" />
+                        <input type="button"  value="登&nbsp;&nbsp;&nbsp;&nbsp;陆" class="fM" onclick="$('#form').submit()" />
+                    </div>
+                    <!--<div class="security-pro">
+                                  <i class="icons ver-green-down"></i>
+                                  <b>您的信息已通过256位SGC加密保护，数据传输安全</b>
+                              </div>-->
+                </form>
+            </div>
+            <div class="p-dl">
+                <form class="registForm" onsubmit="return regcheck();" enctype="multipart/form-data" method="post" name="reg" id="reg">
+                    <ul class="login-items">
+                        <li class="clearfix">
+                            <input class="input" name="mobile" id="mobile" type="text" value="" placeholder="手机号码（登录帐号）">
+                        </li>
+                        <li class="clearfix">
+                            <input class="input left" type="text" value=""  name="verify" placeholder="输入验证码" style="width:100px;" />
+                            <div id="send"><a href="#" class="send_code right">获取验证码</a></div>
+                        </li>
+                        <li class="clearfix">
+                            <input class="input" type="text" value=""  name="realname" placeholder="姓名">
+                        </li>
+                        <li class="clearfix sex">
+                            <input type="radio" checked="" name="gender" value="M" />
+                            男&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="gender" value="F" />
+                            女 </li>
+                        <li class="clearfix">
+                            <input id="" class="input" type="password" name="password" value="" placeholder="输入密码（六位字符）">
+                        </li>
+                    </ul>
+                    <div class="login-button">
+                        <input type="hidden" value="" name="carid" class="ordercarid" />
+                        <input type="hidden" value="" name="carstatus" class="orderstatus" />
+                        <input type="button"  value="立即注册" class="fM" onclick="$('#reg').submit()" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--右侧搜索加入对比开始-->
+<script type="text/javascript" src="js/miniBar.js"></script>
+<script type="text/javascript" src="js/lg_reg.js"></script>
+
+<script type="text/javascript" src="js/search_car.js"></script>
+<script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js"></script>
+<!--右侧搜索加入对比结束-->
+<!--右侧滚动开始-->
+<script type="text/javascript">
+    $(function(){
+        $(window).scroll(function(){
+        })
+    })
+    jQuery(".txtMarquee-top").slide({mainCell:".bd ul",autoPlay:true,effect:"topMarquee",vis:5,interTime:50,trigger:"click"});
+</script>
+<!--右侧滚动结束-->
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap-datetimepicker.css">
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+<script type="text/javascript" src="bootstrap/js/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+<script type="text/javascript">
+    $('.form_datetime').datetimepicker({
+        format: 'yyyy-mm',
+        language:"zh-CN",
+        startView: 3,
+        minView: 3,
+        autoclose:true
+
+    });
+</script>
+<script type="text/javascript" th:inline="javascript">
+    $("#personid").click(function () {
+        var username = $("#username").val();
+        if (username==null||username==""){
+            alert("请登录后查看！");
+            window.location.href="/login";
+            return false;
+        }else {
+            window.location.href="/personalPage";
+        }
+    })
+
+    $("#cid").click(function () {
+        var username = $("#username").val();
+        if (username==null||username==""){
+            alert("请登录后查看！");
+            window.location.href="/login";
+            return false;
+        }else {
+            window.location.href="/collectPage?username="+username;
+        }
+    })
+</script>
+</body>
+</html>

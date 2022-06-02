@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/sell.css}">
+    <script type="text/javascript" th:src="@{/js/jquery-1.8.2.min.js}"></script>
+    <title>车辆对比</title>
+</head>
+<body>
+<div id="header">
+    <div class="top">
+        <div class="wrap clearfix">
+            <div class="nav left dInline" id="headerMenu">
+                <a  th:href="@{/homepage}">首页</a>
+                <a href="about.html">关于ZOOM-ZOOM</a>
+                <a th:if="${session.username}!='admin'" id="personid">个人中心</a>
+                <a th:if="${session.username}=='admin'" id="personid">管理中心</a>
+                <input type="hidden" id="username" th:value="${session.username}">
+            </div>
+            <div th:switch="${session.username}">
+                <span class="right" id="rightMenuHtml" th:if="${session.username}==null">
+					<a th:href="@{/login}" class="b-login" id="b-login">登录</a>|<a th:href="@{/registerPage}" id="b-regist">注册</a>&nbsp;
+	                </span>
+                <span class="right" id="rightMenuHtml" th:if="${session.username}!=null" th:text="您好+${session.username}">
+
+	                </span>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="about" >
+    <div class="mTags">
+        <div align="center" class="wrap"> <h1>车辆对比信息</h1> </div>
+    </div>
+    <div class="dbBox wrap">
+        <div class="carSoureBody">
+                <div class="carSoureList clearfix">
+                    <ul class="carSul clearfix" >
+                        <li class="l1"></li>
+
+                            <li th:each="c:${cars}"> <a th:href="@{/carQuery(carId=${c.carId})}">
+                                <div class="imgOut_3"> <img th:src="${c.mainimg}" style="width:105%"> </div>
+                                <h1 th:text="${c.model+c.edition+c.displacement}"></h1>
+                            </a>
+                                <p class="pre"> <span>价格：</span> <b th:text="${c.getPrice()}"></b>万起 </p>
+                                <div align="center" class="mini-tocar">
+                                    <a th:href="@{/cancelContrast(carId=${c.carId})}" style="color: #449d44">取消对比</a>
+                                </div>
+                            </li>
+
+                    </ul>
+                    <div class="carSutl clearfix">
+                        <ul>
+                            <li>
+                                <p class="carSutl_top cur"> <span class="fl">车辆信息</span> <span class="fr"></span> </p>
+                                <div class="con" style="display:block;">
+                                    <table>
+                                        <tr>
+                                            <th><span>型号</span></th>
+                                                <td class="std1" th:each="c:${cars}"><span th:text="${c.model}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>版本</span></th>
+                                                <td class="std1" th:each="c:${cars}"><span th:text="${c.edition}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>价格</span></th>
+                                                <td class="std1" th:each="c:${cars}"><span th:text="${c.price}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>车型</span></th>
+                                                <td class="std1" th:each="c:${cars}"><span th:text="${c.carType}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>车身颜色</span></th>
+                                                <td class="std1" th:each="c:${cars}"><span th:text="${c.color}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>排量</span></th>
+                                                <td class="std1" th:each="c:${cars}"><span th:text="${c.displacement}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>排放标准</span></th>
+                                                <td class="std1" th:each="c:${cars}"><span th:text="${c.emissionStandard}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>出厂日期</span></th>
+                                                <td class="std1" th:each="c:${cars}"><span th:text="${c.dateOfManufacture}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>长宽高</span></th>
+                                                <td class="std1" th:each="c:${cars}"><span th:text="${c.longwidehigh}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>轴距</span></th>
+                                                <td class="std1" th:each="c:${cars}"><span th:text="${c.wheelbase}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>轮胎规格</span></th>
+                                                <td class="std1" th:each="c:${cars}"><span th:text="${c.tire}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>邮箱容积</span></th>
+                                                <td class="std1" th:each="c:${cars}"><span th:text="${c.tankVolume}"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>质量</span></th>
+                                                <td class="std1" th:each="c:${cars}"><span th:text="${c.quality}"></span></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </li>
+
+                            <li>
+                                <p class="carSutl_top"> <span class="fl">配置信息</span> <span class="fr"></span> </p>
+                                <div class="con">
+                                    <table>
+                                        <tr>
+                                            <th><span>座位数</span></th>
+                                            <td class="std1"><span>9</span></td>
+                                            <td class="std1"><span>5</span></td>
+                                            <td class="std1"><span>5</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>排气量</span></th>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>燃料形式</span></th>
+                                            <td class="std1"><span>汽油</span></td>
+                                            <td class="std1"><span>汽油</span></td>
+                                            <td class="std1"><span>汽油</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>变速箱</span></th>
+                                            <td class="std1"><span>AT自动</span></td>
+                                            <td class="std1"><span>AT自动</span></td>
+                                            <td class="std1"><span>AT自动</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>驱动方式</span></th>
+                                            <td class="std1"><span>后驱</span></td>
+                                            <td class="std1"><span>前驱</span></td>
+                                            <td class="std1"><span>全时四驱</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>无钥匙进入</span></th>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>无钥匙启动</span></th>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>全景天窗</span></th>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>真皮座椅</span></th>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>前排座椅加热</span></th>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span>无</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>后排座椅加热</span></th>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>前排座椅通风</span></th>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>后排座椅通风</span></th>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>前排座椅记忆</span></th>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>后排座椅记忆</span></th>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>导航系统</span></th>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>中控台液晶屏</span></th>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span>已加装</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>自动头灯</span></th>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>后视镜加热</span></th>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>发动机启停</span></th>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>防抱死制动系统</span></th>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>前驻车雷达</span></th>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>后倒车雷达</span></th>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>氙气大灯</span></th>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>倒车影像系统</span></th>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>已加装</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>驾驶员座椅电动调节</span></th>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>副驾驶座椅电动调节</span></th>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>大灯清洗</span></th>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>电动折叠后视镜</span></th>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>定速巡航</span></th>
+                                            <td class="std1"><span>/</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span>有</span></td>
+                                            <td class="std1"><span></span></td>
+                                            <td class="std1"><span></span></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+           <!-- <c:if test="${empty cars}">
+                <tr>
+                    <td colspan="12" align="center">
+                        <div align="center"><h1 >没有对比车辆!请添加</h1></div>
+                    </td>
+                </tr>
+            </c:if>-->
+
+        </div>
+    </div>
+</div>
+
+<!--footer部分开始-->
+
+<div id="footer">
+    <div class="foot-a1">
+        <div class="wrap">
+            <ul class="clearfix">
+                <li> <img src="images/db1.png"/>
+                    <p>365项检测认证</p>
+                </li>
+                <li> <img src="images/db2.png"/>
+                    <p>5000公里无需保养</p>
+                </li>
+                <li> <img src="images/db3.png"/>
+                    <p>1年或两万公里无忧质保</p>
+                </li>
+                <li> <img src="images/db4.png"/>
+                    <p>7天无忧退换</p>
+                </li>
+                <li> <img src="images/db5.png"/>
+                    <p> 置换有增值</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="foot-a" align="center">
+        <div class="wrap clearfix">
+            <div class="fDl left dInline "> <strong>我们承诺</strong>
+                <ul>
+                    <li><a href="#">365项严苛检测</a></li>
+                    <li><a href="#">5000公里无需保养</a></li>
+                    <li><a href="#">一年或两万公里质保</a></li>
+                    <!-- <li><a href="#">7天退换</a></li> -->
+                </ul>
+            </div>
+            <div class="fDl left dInline "> <strong>买车指南</strong>
+                <ul>
+                    <li><a href="#" target="_blank">买者注意事项</a></li>
+                    <li><a href="#" target="_blank">常见的陷阱</a></li>
+                    <li><a href="#" target="_blank">小窍门</a></li>
+                </ul>
+            </div>
+            <div class="fDl left dInline "> <strong>售后服务</strong>
+                <ul>
+                    <li><a href="#">24小时道路救援</a></li>
+                    <li><a href="#">定期上门维修保养服务</a></li>
+                    <li><a href="#">预约保养</a></li>
+                </ul>
+            </div>
+            <div class="fDl left dInline "> <strong>关于ZOOM车行</strong>
+                <ul>
+                    <li><a href="#" target="_blank">ZOOM优势</a></li>
+                    <li><a href="#" target="_blank">联系我们</a></li>
+                    <li><a href="#" target="_blank">评估团队</a></li>
+                </ul>
+            </div>
+            <div class="fDl left dInline "> <strong>ZOOM车行文化</strong>
+                <ul>
+                    <li><a href="#">中原文化</a></li>
+                    <li><a href="#">立天下</a></li>
+                    <li><a href="#">改变、规范、引领一方市场</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div style=margin-top:10px;> <!-- class="foot-b"   -->
+        <div align="center" >
+            Copyright © 2021 qcauto All Rights Reserved 苏州ZOOM—ZOOM汽车有限公司 版权所有 苏ICP备04101207号<br/>
+            地址：苏州市工业园区苏州中心店 服务热线：400-888-6666<br/>
+        </div>
+
+    </div>
+</div>
+
+<!--footer部分结束-->
+<!--右侧内容的开始-->
+<div id="miniBus" style="right:-270px;">
+    <div class="mini-bar">
+        <div class="mini-barlist">
+            <ul>
+                <div class="mini-mi shopping">
+                    <a type="s" id="cid"  onclick="collect()">
+                        <i class="mini-ease" style="color: #e8e8e8">我的收藏</i>
+                    </a>
+                    <li class="callItem"></li>
+                </div>
+                <div class="mini-mi shopping">
+                    <a th:href="@{/contrast}">
+                        <i class="mini-ease" style="color: #e8e8e8">对比车辆</i>
+                        <abbr id="Dbnumber" th:text="${session.contrastCarSize}">0</abbr>
+                    </a>
+                </div>
+            </ul>
+        </div>
+        <a class="mini-gotop"></a>
+        <a class="wx1"><img src="/images/wx_1.png"></a>
+        <div class="wmImg hide">
+            <img src="/images/wx_2.png">
+        </div>
+    </div>
+    <div class="mini-cont">
+    </div>
+</div>
+<!--右侧内容的结束-->
+
+
+<script type="text/javascript" th:src="@{/js/miniBar.js}"></script>
+<script type="text/javascript" th:src="@{/js/lg_reg.js}"></script>
+<script type="text/javascript">
+    $(function(){
+        //表单选择
+        $(".select").click(function(e){
+            e.stopPropagation();
+            $(".select-open").addClass("hide");
+            $(this.parentNode).find(".select-open").removeClass("hide");
+        });
+        $(document.body).click(function() {
+            $(".select-open").addClass("hide");
+        });
+        // alert($('.cbDl').length);
+        $('.brand-cata li').click(function(){
+            var index=$(this).index();
+            var t=$('#choose-brand .choose-box');
+            var $sH=t.scrollTop()+($('.cont-tit').eq(index).offset().top-t.offset().top);
+            $('#choose-brand .choose-box').animate({scrollTop:$sH},500);
+        })
+
+        $('.car-select').each(function(){
+            var sTxt=$(this).find('.display-text');
+
+            $(this).find('.choose-cont').click(function(){
+                sTxt.text($(this).text());
+                $(this).find('.select-open').addClass("hide");
+            });
+        })
+
+        $('.carSutl_top').click(function(){
+            $('.carSutl_top').removeClass('cur')
+            $(this).addClass('cur');
+            $(this).parent('li').find('.con').stop(true,true).slideDown();
+            $(this).parent('li').siblings().find('.con').stop(true,true).slideUp();
+        })
+
+    })
+</script>
+<script type="text/javascript" th:inline="javascript">
+    $("#personid").click(function () {
+        var username = $("#username").val();
+        if (username==null||username==""){
+            alert("请登录后查看！");
+            window.location.href="/login";
+            return false;
+        }else {
+            window.location.href="/personalPage";
+        }
+    })
+
+    $("#cid").click(function () {
+        var username = $("#username").val();
+        if (username==null||username==""){
+            alert("请登录后查看！");
+            window.location.href="/login";
+            return false;
+        }else {
+            window.location.href="/collectPage?username="+username;
+        }
+    })
+</script>
+</body>
+</html>

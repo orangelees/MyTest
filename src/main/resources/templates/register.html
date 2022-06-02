@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ZOOM账号注册</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        .cms_login {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            background-repeat: no-repeat;
+            background-image: url("[[@{/}]]images/login3.jpg");
+            background-size: 100% 100%;
+        }
+
+        .flexCenter {
+            text-align: center;
+            margin: auto;
+        }
+
+        .cms_login_container {
+            width: 70%;
+            height: 70%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .cms_login_image {
+            width: 60%;
+            height: 100%;
+        }
+
+        .cms_login_from {
+            width: 40%;
+            height: 100%;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px #ccc;
+        }
+
+        /* .cms_login_container {
+            width: 30%;
+            height: 70%;
+            border: 1px solid red;
+        } */
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .divBox {
+            display: flex;
+            justify-content: center;
+            width: 80%;
+            height: 46px;
+            margin-top: 20px;
+            margin-left: 10%;
+            position: relative;
+        }
+
+        .cms_login_logo {
+            display: flex;
+            justify-content: center;
+            width: 80%;
+            height: 60px;
+            /* border: 1px solid green; */
+            margin-left: 10%;
+            margin-bottom: 22px;
+            margin-top: 25px;
+        }
+
+        .cms_login_img {
+            width: 44px;
+            height: 44px;
+            position: absolute;
+            top: 1px;
+            left: 1px;
+        }
+
+        .cms_login_ipt {
+            width: 100%;
+            outline: none;
+            padding-left: 50px;
+        }
+
+        .cms_login_ipt60 {
+            width: 60%;
+            outline: none;
+            padding-left: 50px;
+        }
+
+        .cms_login_ver {
+            width: 30%;
+            outline: none;
+            margin-left: 8%;
+            border: 1px solid #c32c2c;
+            background-color: #bd7070;
+            line-height: 46px;
+            letter-spacing: 4px;
+            border-radius: 4px;
+            cursor: default;
+            color: white;
+        }
+
+        .margin_top60 {
+            margin-top: 40px;
+        }
+
+        .login_btn {
+            width: 100%;
+            height: 60px;
+            letter-spacing: 10px;
+            font-size: 24px;
+            background-color: green;
+            border: none;
+            outline: none;
+            border-radius: 10px;
+            color: white;
+        }
+
+        .login_btn:hover {
+            background-color: #044468;
+            border: none;
+            outline: none;
+        }
+    </style>
+
+
+</head>
+<body>
+<div class="cms_login">
+
+    <div class="cms_login_container flexCenter" style="min-height:530px;">
+        <div class="cms_login_image" style="min-width: 380px;">
+            <!--  <img src="./leftimg_04.png" alt=""> -->
+        </div>
+        <div class="cms_login_from" style="min-width: 380px;" ><!--  -->
+            <form th:action="@{/userRegister}" id="cs" method="get">
+                <div class="cms_login_logo"><span style="font-size:24px;">账号注册</span></div><!--     -->
+                <div class="divBox"> <img class="cms_login_img" src="images/username_mark.png">
+                    <input class="cms_login_ipt" type="text" placeholder="请输入账号"  name="username" id="cms_login_username">
+                </div>
+                <div class="divBox"> <img class="cms_login_img" src="images/password_mark.png">
+                    <input type="password" placeholder="请输入密码" class="cms_login_ipt" name="password" id="cms_login_passward">
+                </div>
+                <div class="divBox"> <img class="cms_login_img" src="images/password_mark.png">
+                    <input type="password" placeholder="请确认密码" class="cms_login_ipt" name="repassword" id="cms_login_repassward">
+                </div>
+                <div class="divBox"> <img class="cms_login_img" src="images/username_mark.png">
+                    <input type="text" placeholder="请输入真实姓名" class="cms_login_ipt" name="name" id="cms_login_name">
+                </div>
+                <div class="divBox"> <img class="cms_login_img" src="images/username_mark.png">
+                    <input type="text" placeholder="请输入手机号码" class="cms_login_ipt" name="phone" id="cms_login_phone">
+                </div>
+                <div class="divBox margin_top60" style="border:none;">
+                    <input class="login_btn" type="submit" value="注册" name="submit">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:src="@{/js/jquery-1.11.0.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/jquery.validate.js}"></script>
+<script type="text/javascript" th:src="@{/js/messages_zh.js}"></script>
+<script>
+    $(function(){
+        var str="XXX";
+        document.getElementsByName("cms_login_name").value=str;
+
+        $("form").validate({
+
+            /*var result = 2,
+
+            document.form1.comUserId.value=result1,
+            document.cs.*/
+
+
+            rules:{
+                username:"required",
+                password:"required",
+                repassword:{
+                    required:true,
+                    equalTo:"#cms_login_passward"
+                },
+                name:"required",
+                phone:"required"
+            },
+            messages:{
+                username:"账号不能为空",
+                password:"密码不能为空",
+                repassword:{
+                    required:"确认密码不能为空",
+                    equalTo:"两次密码不一致"
+                },
+                name:"姓名不能为空",
+                phone:"号码不能为空"
+            }
+
+        });
+    });
+</script>
+</body>
+</html>

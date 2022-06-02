@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lqs.dao.CarDao">
+    <select id="getCarList" resultType="Car">
+        select * from car
+    </select>
+    <select id="getCarById" resultType="Car">
+        select * from car where carId=#{carId}
+    </select>
+    <select id="getCarLike" resultType="Car">
+        select * from car ORDER BY rand() LIMIT 4
+    </select>
+    <select id="getContrastList" resultType="Car">
+        select * from contrast
+
+    </select>
+    <delete id="cancelContrast">
+		delete from contrast where carId=#{carId}
+	</delete>
+    <insert id="addContrast" parameterType="String">
+        insert into contrast(brandName,model,edition,price,carType,color,displacement,emissionStandard,dateOfManufacture,longwidehigh,wheelbase,tire,tankVolume,quality,mainimg,carId) select brandName,model,edition,price,carType,color,displacement,emissionStandard,dateOfManufacture,longwidehigh,wheelbase,tire,tankVolume,quality,mainimg,carId from car where carId=#{carId}
+    </insert>
+
+    <insert id="collectCar">
+        insert into collection (username,carId) values (#{username},#{carId})
+    </insert>
+
+    <select id="selectCollect" resultType="Car" parameterType="String">
+        SELECT * FROM car a INNER JOIN collection b ON (username=#{username} and a.carId=b.carId);
+    </select>
+    <delete id="delCollect">
+        delete from collection where username=#{username} and carId=#{carId}
+    </delete>
+    <select id="findCarByBrandname"  resultType="car">
+		SELECT * FROM car where brandname=#{brandname}
+	</select>
+    <select id="findCarByType"  resultType="car">
+		SELECT * FROM car where carType=#{carType}
+	</select>
+    <select id="getCarListByPrice30"  resultType="car">
+		SELECT * FROM car where 30>price
+	</select>
+    <select id="getCarListByPrice3050" parameterType="car" resultType="car">
+		SELECT * FROM car where price between 30 and 50
+	</select>
+    <select id="getCarListByPrice50100" parameterType="car" resultType="car">
+		SELECT * FROM car where price between 50 and 100
+	</select>
+    <select id="getCarListByPrice100" parameterType="car" resultType="car">
+		SELECT * FROM car where  price>100
+	</select>
+    <update id="updateCar" parameterType="car">
+        update car set brandName=#{brandName},model=#{model},edition=#{edition},price=#{price},carType=#{carType},color=#{color},displacement=#{displacement},emissionStandard=#{emissionStandard},dateOfManufacture=#{dateOfManufacture},longwidehigh=#{longwidehigh},wheelbase=#{wheelbase},tire=#{tire},tankVolume=#{tankVolume},quality=#{quality},img1=#{img1},img2=#{img2},img3=#{img3},img4=#{img4},img5=#{img5},img6=#{img6},mainimg=#{mainimg},carId=#{carId} where carId=#{carId}
+    </update>
+
+    <insert id="addCar">
+        insert into car (brandName,model,edition,price,carType,color,displacement,emissionStandard,dateOfManufacture,longwidehigh,wheelbase,tire,tankVolume,quality,img1,img2,img3,img4,img5,img6,mainimg,carId) values (#{brandName},#{model},#{edition},#{price},#{carType},#{color},#{displacement},#{emissionStandard},#{dateOfManufacture},#{longwidehigh},#{wheelbase},#{tire},#{tankVolume},#{quality},#{img1},#{img2},#{img3},#{img4},#{img5},#{img6},#{mainimg},#{carId})
+    </insert>
+    <delete id="delCarById">
+        delete from car where carId=#{carId}
+    </delete>
+
+</mapper>

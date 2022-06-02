@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/hurst.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/bootstrap.css}"  media="screen">
+    <script type="text/javascript" th:src="@{/js/jquery-1.8.2.min.js}"></script>
+
+    <title>个人中心</title>
+</head>
+<body>
+<div id="header">
+    <div class="top">
+        <div class="wrap clearfix">
+            <div class="nav left dInline" id="headerMenu">
+                <a  th:href="@{/homepage}">首页</a><!-- class="on" -->
+                <a href="about.html">关于ZOOM-ZOOM</a>
+
+                <a id="personid">管理中心</a>
+            </div>
+            <span class="right" id="rightMenuHtml">
+
+			</span>
+        </div>
+    </div>
+
+</div>
+<div id="about">
+    <div class="mebBox">
+        <div class="meb-cont clearfix wrap">
+            <div class="meb-nav left dInline">
+                <ul class="clearfix">
+                    <!--<li><a href="会员中心首页.html">个人中心</a></li>-->
+                    <!-- <li class="on"><a href="ooo.html">我的需求</a></li>-->
+                    <!-- <li><a href="会员中心_我的车.html">我的车</a></li>
+                     <li><a href="会员中心_账户管理.html">账户管理</a></li>-->
+                </ul>
+            </div>
+            <div class="meb-right right dInline">
+                <div class="mr-top">
+                    <div class="mr-top-div clearfix">
+        <span class="left">
+            <img src="images/photo.png"/>
+        </span>
+                        <div class="mr-infor left dInline">
+                            <h2>欢迎你，尊敬的用户 <b th:value="${session.user.name}" th:text="${session.user.name}">-1</b></h2>
+                            <a onclick="signOut()">退出账号</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="mr-detail">
+                    <div class="mr-tab clearfix">
+                        <a class="on">预约信息管理</a>
+                        <!--<a>待完善</a>-->
+                        <a>个人资料</a>
+                        <a>修改密码</a>
+                        <!--<a>车辆管理</a>-->
+                    </div>
+                    <div class="me-box">
+                        <div class="me-dl" style="display:block;">
+                            <div class="me-one" id="me-o">
+                                <table class="table table-condensed">
+                                    <tr class="active">
+                                        <td>状态</td>
+                                        <td>姓名</td>
+                                        <td>电话</td>
+                                        <td>地址</td>
+                                        <td>时间</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr class="success" th:each="reserve:${reserves}">
+                                        <td th:text="${reserve.state}"></td>
+                                        <td th:text="${reserve.name}"></td>
+                                        <td th:text="${reserve.phone}"></td>
+                                        <td th:text="${reserve.address}"></td>
+                                        <td th:text="${reserve.datetime}"></td>
+                                        <td >
+                                            <div th:if="${session.user.name}!='admin'">
+                                                <a th:if="${reserve.state}=='待审核'" th:href="@{/cancelReserve(reserveId=${reserve.reserveId},reserveType=1)}" th:id="cancelReserve">取消</a>
+                                            </div>
+                                            <div th:if="${session.user.name}=='admin'">
+                                                <a th:if="${reserve.state}=='待审核'" th:href="@{/cancelReserve(reserveId=${reserve.reserveId},reserveType=2)}" th:id="agreeReserve">同意</a>
+                                                <a th:if="${reserve.state}=='待审核'" th:href="@{/cancelReserve(reserveId=${reserve.reserveId},reserveType=3)}" th:id="refuseReserve">拒绝</a>
+                                                <a th:href="@{/delReserve(reserveId=${reserve.reserveId})}" >删除</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="me-dl">
+                            <div class="me-more"><!--th:action="@{/updateUserMsg}"-->
+                                <form  enctype="multipart/form-data" id="formid" name="editM" method="post" onsubmit="return checkpost();">
+                                    <div class="afl clearfix">
+                                        <div class="afl clearfix">
+                                            <label class="left">
+                                                姓名
+                                            </label>
+                                            <div class="af-r left dInline">
+                                                <input type="hidden" name="username" th:value="${session.username}">
+                                                <input type="text" class="ar-txt" name="name" placeholder="请输入您的姓名" th:value="${session.user.name}" />
+                                            </div>
+                                        </div>
+                                        <label class="left">
+                                            手机号码
+                                        </label>
+                                        <div class="af-r left dInline">
+                                            <input type="text" class="ar-txt" name="phone" placeholder="请输入手机号码" th:value="${session.user.phone}"  />
+                                        </div>
+                                    </div>
+                                    <div class="afl clearfix">
+                                        <label class="left">
+                                            邮箱
+                                        </label>
+                                        <div class="af-r left dInline">
+                                            <input type="text" class="ar-txt" name="email" placeholder="请输入您的邮箱" value="" />
+                                        </div>
+                                    </div>
+                                    <div class="afl clearfix">
+                                        <label class="left">
+                                        </label>
+                                        <div class="af-r left dInline">
+                                            <input id="butid" type="submit" value="提 交" class="ar-btn">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="me-dl">
+                            <div class="me-more">
+                                <form action="" enctype="multipart/form-data" id="formid2" name="editP" method="post" onsubmit="return checkPasspost();">
+                                    <div class="afl clearfix">
+                                        <label class="left">
+                                            当前密码
+                                        </label>
+                                        <div class="af-r left dInline">
+                                            <input type="hidden" id="username" name="username" th:value="${session.user.username}">
+                                            <input type="hidden" id="oldpassword" name="oldpassword" th:value="${session.user.password}">
+                                            <input type="password" class="ar-txt" id="password" name="password" placeholder="请输入当前密码" value="" />
+                                        </div>
+                                    </div>
+                                    <div class="afl clearfix">
+                                        <label class="left">
+                                            新密码
+                                        </label>
+                                        <div class="af-r left dInline">
+                                            <input type="password" class="ar-txt" id="password1" name="password1" placeholder="请输入新密码" value="" />
+                                        </div>
+                                    </div>
+                                    <div class="afl clearfix">
+                                        <label class="left">
+                                            确认新密码
+                                        </label>
+                                        <div class="af-r left dInline">
+                                            <input type="password" class="ar-txt" id="password2" name="password2" placeholder="请确认输入的新密码" value="" />
+                                        </div>
+                                    </div>
+                                    <div class="afl clearfix">
+                                        <label class="left">
+                                        </label>
+                                        <div class="af-r left dInline">
+                                            <input id="butid2" type="submit" value="提 交" class="ar-btn">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mr-detail">
+                    <div class="mr-tab clearfix">
+                        <a class="on">车辆管理</a>
+                        <a th:href="@{/carMsg(type=1)}">新增车辆</a>
+                    </div>
+                    <div class="me-box">
+                        <div class="me-dl" style="display:block;">
+                            <div class="me-one" id="me-four" th:each="c:${cars}">
+                                <ul class="cs-list">
+                                    <li class="clearfix" style="position: relative;">
+                                        <span >
+                                            <a th:href="@{/carQuery(carId=${c.carId})}" target="_blank">
+                                            <div class="car_bg"> </div>
+                                              <img th:src="${c.mainimg }"  width="300" />
+                                             </a>
+                                        </span>
+                                        <div class="carTxt right dInline" >
+                                            <h2><a href="maiche_show.html" target="_blank"  th:text="${c.model+c.edition+c.displacement}">没有数据</a></h2>
+                                            <p>
+                                                <span th:text="'出厂日期：'+${c.dateOfManufacture}">没有数据</span>
+                                                <span th:text="'轴距：'+${c.wheelbase}">没有数据</span>
+                                                <span th:text="'排量：'+${c.displacement}">没有数据</span>
+                                                <span th:text="'排放标准：'+${c.emissionStandard}">没有数据</span>
+                                            </p>
+                                            <div class="price clearfix" style="margin:8px 0;">
+                                                <div class="left dInline pNum" style="width:110px;">
+                                                    <font>价格</font><br/>
+                                                    <span class="num nBlue" th:text="${c.price}"></span>
+                                                    <font> 万元</font>
+                                                </div>
+                                                <span th:if="${session.user.name}=='admin'" class="num1 left" style="height:43px; width:450px;padding-top:10px;">
+		                                            <a th:href="@{/carMsg(carId=${c.carId})}">修改</a>
+                                                    <a th:href="@{/delCar(carId=${c.carId})}" onclick="return delCar();">删除</a><!--th:href="@{/delCar(carId=${c.carId})}"-->
+		                                         </span>
+                                            </div>
+                                            <div class="cs_bt clearfix" style="padding-top:7px;">
+                                                <a th:href="@{/carQuery(carId=${c.carId})}" class="cs-q " id="Order_1165">查看详情</a>
+                                                <a  class="b-login" th:if="${session.user.name}!='admin'" th:href="@{/delCollect(carId=${c.carId},username=${session.username},page=2)}" >取消收藏</a><!--th:href="@{/delCollect(carId=${c.carId},username=${session.username})}"    id="delcollect"-->
+                                                <input type="hidden" id="delCollectcarId" th:value="${c.carId}">
+                                                <span >已有188人关注此车</span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="hPages">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+
+
+<style type="text/css">
+    #showdiv{width:586px;background:#fff;overflow: hidden;color:#333;}
+    #showdiv .showTit{color: #000;font-size:18px;border-bottom:1px solid #a0a0a0;padding:20px;background:#f3f3f3;}
+    #showdiv .dk_r{width:205px;}
+    #showdiv .dk_div{width:516px;background:#f3f3f3;height:180px;margin:15px auto;}
+    .dk_tit{height:37px;line-height:37px;background:#ccd3e0}
+    .dk_tit span{display:inline-block;float:left;width: 50%;text-align:center;color:#3865c0;font-size:14px;position:relative;height:37px;cursor: pointer;}
+    .dk_tit span.on{color:#fff;background:#3865c0}
+    .dk_tit span.on i{position:absolute;left:50%;margin-left:-3px;background:url(images/dk_d.png) no-repeat;width:6px;height:4px;bottom:-4px;}
+    .dk_dl{padding:30px 0px 0 40px;}
+    .dk_dl label{width: 70px;display:block;height:25px;margin-right:20px;}
+    .dk_dl li{height:25px;line-height:25px;font-size:14px;color:#000;margin-bottom:20px}
+    .dk_tag span{display:inline-block;padding:0 13px;margin-right:10px;cursor: pointer;cursor: pointer;}
+    .dk_tag span.on{background:#3865c0;color: #fff;}
+
+    a.dk_btn{display:block;background-color: #1663B1;color:#fff;font-size:14px;height:30px;line-height:30px;width:215px;margin:0 auto;text-align: center;margin-top:10px}
+    #showdiv li .yh_s{cursor: pointer;}
+    .buy_je{text-align: center;font-size:18px;padding:15px 0 0 0;line-height:38px;}
+    .buy_je strong{font-weight: normal;color: #3865c0;font-size:38px;display:inline-block;padding:0 6px;}
+    .dk_result{background:#f3f3f3;padding:20px 0;text-align:center;margin-top:25px;}
+    .dk_tel{font-size:18px;color:#484848;padding:10px 0 4px 0;}
+    .dk_result p{color:#969696;}
+</style>
+<script type="text/javascript">
+    $(function(){
+        $('.dk_tit span').each(function(index){
+            $(this).click(function(){
+                $(this).addClass('on').siblings().removeClass('on');
+                $('.dk_dl ul').eq(index).removeClass('hide').siblings().addClass('hide');
+            })
+        });
+        $('.dk_tag span').click(function(){
+            $(this).addClass('on').siblings().removeClass('on');
+        })
+    })
+</script>
+
+<script>
+
+    function JSuanQ(carid,price,descript){
+        $('#thisCarId').val(carid);
+        $('#thisCarPrice').html('汽车金额 <strong>'+price+'万</strong>元');
+        //$('#changepriceHtml').html(descript);
+    }
+
+
+    $(function(){
+        $('.small_img li a').click(function(){
+            var path=$(this).find('img').attr('src');
+            $('.prev_bg').find('img').attr('src',path);
+            $('.small_img li a').removeClass('zoomThumbActive');
+            $(this).addClass('zoomThumbActive');
+        })
+        $("#dBtn").fancybox({
+            'padding':'0',
+            'titlePosition':'inside',
+            'transitionIn':'elastic',
+            'transitionOut':'elastic'
+        });
+        $('.yh_s').each(function(index){
+            $(this).click(function(){
+                pricechange('0');
+                $('.dr_pay input').attr('checked',false);
+                $('.dr_year input').attr('checked',false);
+                $('.yh_s input').attr('checked',false);
+                $(this).find('input').attr('checked',true);
+                $('.dr_pay').eq(index).removeClass('hide').siblings().addClass('hide')
+            })
+        })
+    })
+    //jSuanQ('122')
+</script>
+
+<script type="text/javascript" src="js/miniBar.js"></script>
+<script type="text/javascript" src="js/lg_reg.js"></script>
+<script type="text/javascript" src="js/smooth-scroll.js"></script>
+<script type="text/javascript" src="js/jquery.SuperSlide.2.1.1.js"></script>
+<script type="text/javascript">
+    $('.mr-tab a').each(function(index){
+        $(this).click(function(){
+            $(this).addClass('on').siblings().removeClass('on');
+            $('.me-dl').eq(index).show().siblings().hide();
+        })
+    });
+    $('.cs_ding a').mouseover(function(){
+        this.style.color='blue';
+    })
+    $('.cs_ding a').mouseout(function(){
+        this.style.color='#4573af';
+    })
+    function clsub(id){
+        $('#memId').val(id);
+        var url='/Member/getCardImg/channel/7.html';
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {id:id},
+            dataType: "json",
+            success: function(data){
+                if(data.idcarda){
+                    document.getElementById("imgPreview1").src = data.idcarda;
+                }else{
+                    document.getElementById("imgPreview1").src = 'images/qzx.jpg';
+                }
+                if(data.idcardb){
+                    document.getElementById("imgPreview2").src = data.idcardb;
+                }else{
+                    document.getElementById("imgPreview2").src = 'images/qzx.jpg';
+                }
+            }
+        });
+        $overlay = $('.overlay');
+        $overlay.addClass('active');
+        $('.popup-over').show().addClass('active');
+        $overlay.click(function(){
+            modalHidden($whichPopup);
+        });
+        var $whichPopup = $('.popup-over');
+        $('.popup-over').show().addClass('active');
+        $overlay.click(function(){
+            modalHidden($whichPopup);
+        });
+        $('.overBtn').click(function(){
+            modalHidden($whichPopup);
+        });
+        $whichPopup.click(function(e){
+            e.stopPropagation();
+        });
+        function modalHidden($ele) {
+            $ele.removeClass('active');
+            $overlay.removeClass('active');
+        }
+
+    }
+
+    function subc(){
+        var postfile1=uploadIdForm.postfile1.value;
+        var postfile2=uploadIdForm.postfile2.value;
+        var memId=uploadIdForm.memId.value;
+        var url='/Member/cardImg/channel/7.html';
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {postfile1:postfile1, postfile2:postfile2,memId:memId},
+            dataType: "json",
+            headers:{'ClientCallMode':'ajax'},
+            data:$('#formid').serialize(),
+            success: function(data){
+                if(data.result=='1'){
+                    alert('添加成功');
+                }else{
+                    alert('添加失败');
+                    window.location.reload();
+                }
+            }
+        });
+        return false;
+    }
+    $('.auth').click(function(){
+        $('.ver_dialog').fadeIn();
+    })
+    $('.ui-dialog-close').click(function(){
+        $('.ver_dialog').fadeOut();
+    })
+    $('#me-one .hPages a').live('click',function(){
+        var url=$(this).attr('href');
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {type:'LSDZ'},
+            success: function(data){
+                $('#me-one').html(data);
+            }
+        });
+        return false;
+    })
+    $('#me-tow .hPages a').live('click',function(){
+        var url=$(this).attr('href');
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {type:'SELL'},
+            success: function(data){
+                $('#me-tow').html(data);
+            }
+        });
+        return false;
+    })
+    $('#me-three .hPages a').live('click',function(){
+        var url=$(this).attr('href');
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {type:'APPLY'},
+            success: function(data){
+                $('#me-three').html(data);
+            }
+        });
+        return false;
+    })
+    $('#me-four .hPages a').live('click',function(){
+        var url=$(this).attr('href');
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {type:'CONCERN'},
+            success: function(data){
+                $('#me-four').html(data);
+            }
+        });
+        return false;
+    })
+    $('#me-o .hPages a').live('click',function(){
+        var url=$(this).attr('href');
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {type:'ORDER'},
+            success: function(data){
+                $('#me-o').html(data);
+            }
+        });
+        return false;
+    })
+    $('#p_closedziliao').click(function(){
+        $('.overlay').removeClass('active');
+    })
+
+    function delNeed(act,meb){
+        var url='/Member/delNeed/channel/7.html';
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {act:act,meb:meb},
+            success: function(data){
+                if(data.result){
+                    alert('已取消该需求');
+                    window.location.reload();
+                }else{
+                    alert('需求操作失败');
+                    window.location.reload();
+                }
+            }
+        });
+        return false;
+    }
+    function delNeedThis(carid){
+        var url='/Member/delCondent/channel/7.html';
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {carid:carid},
+            success: function(data){
+                if(data.result){
+                    alert('已取消该收藏');
+                    window.location.href="/Member/need/channel/7/list/11/tpl/4";
+                }else{
+                    alert('收藏取消失败');
+                }
+            }
+        });
+        return false;
+    }
+
+    function delOrder(act,meb){
+        var url='/Member/delOrder/channel/7.html';
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {act:act,meb:meb},
+            success: function(data){
+                if(data.result){
+                    alert('已取消该订单');
+                    window.location.reload();
+                }else{
+                    alert('订单取消失败');
+                }
+            }
+        });
+        return false;
+    }
+
+
+</script>
+<script type="text/javascript" th:inline="javascript" >
+    /* for (i=0;i<4;i++){
+         var j = i+1;
+         $("#i").click(function () {
+             var reserveId = $("#j").val();
+             var username = $("#username").val();
+             var phone = $("#phone").val();
+             var datetime=$("#datetime").val();
+             alert(reserveId)
+             alert(datetime)
+             alert(phone)
+             $.ajax({
+                 type:"POST",
+                 url:"/cancelReserve",
+                 //dataType:"json",
+                 data:{reserveId,reserveId},
+                 success:function (data) {
+                     if (data>0){
+                         alert("取消预约成功");
+                         window.location.href="/personalPage?username="+username+"&phone="+phone;
+                     }else {
+                         alert("取消预约失败");
+                     }
+                 }
+             });
+         })
+     }*/
+
+
+    $("#butid").click(function () {
+        $.ajax({
+            type:"POST",
+            url:"/updateUserMsg",
+            dataType:"json",
+            data:$("#formid").serialize(),
+            success:function (data) {
+                if (data>0){
+                    alert("修改资料成功");
+                }else {
+                    alert("修改资料失败");
+                }
+            }
+        });
+        return false;
+    });
+
+    $("#butid2").click(function () {
+
+        var oldness = $("#oldpassword").val();
+        var password =$("#password").val();
+        var password1 =$("#password1").val();
+        var password2 =$("#password2").val();
+        var Ypass=/\S{6,}/;//密码验证*/
+
+        if (oldness!=password){
+            alert("当前密码错误！请重新输入");
+            return false;
+        }
+        if (password1!=password2){
+            alert("密码不一致！请重新输入");
+            return false;
+        }
+        if (Ypass.exec(password1)){
+            alert("密码格式不正确，必须以字母开头的6-16 字母，数字");
+            return false;
+        }
+        $.ajax({
+            type:"POST",
+            url:"/updatePassword",
+            dataType:"json",
+            data:$("#formid2").serialize(),
+            success:function (data) {
+                if (data>0){
+                    alert("密码修改成功");
+                }else {
+                    alert("密码修改失败");
+
+                }
+
+            }
+        })
+        return false;
+    })
+
+    function signOut() {
+        $.ajax({
+            type:"POST",
+            url:"/signOut",
+            dataType:"json",
+            //data:"text",
+            success:function (data) {
+                if (data>0){
+                    alert("退出成功");
+                    window.location.href="/homepage";
+                }else {
+                    alert("退出失败");
+                }
+            }
+        });
+    }
+    function delCar()
+    {
+        if(confirm('确定要执行此操作吗?'))
+        {
+            return true;
+        }
+        return false;
+    }
+
+
+</script>
+
+</body>
+</html>

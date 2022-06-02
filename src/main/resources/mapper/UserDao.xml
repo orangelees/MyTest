@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lqs.dao.UserDao">
+    <select id="login" resultType="User" parameterType="User">
+         select * from user where username=#{username} and password=#{password}
+    </select>
+    <insert id="userRegister" parameterType="User">
+        insert into user (username,password,name,phone) values (#{username},#{password},#{name},#{phone})
+    </insert>
+    <update id="updateUserMsg" parameterType="User">
+        update user set name=#{name},phone=#{phone} where username=#{username}
+    </update>
+    <select id="getUser" resultType="User">
+        select * from user where username=#{username}
+    </select>
+    <update id="updatePassword">
+        update user set password=#{password} where username=#{username}
+    </update>
+    <insert id="addReserve" >
+        insert into reserve (name,phone,address,datetime,state,reserveId) values (#{name},#{phone},#{address},#{datetime},#{state},#{reserveId})
+    </insert>
+    <select id="getReserve" resultType="Reserve">
+        select * from reserve where phone=#{phone}
+    </select>
+    <update id="cancelReserve">
+        update reserve set state=#{state} where reserveId=#{reserveId}
+    </update>
+    <select id="adminReserve" resultType="Reserve">
+        select * from reserve
+    </select>
+    <delete id="delReserve">
+        delete from reserve where reserveId=#{reserveId}
+    </delete>
+</mapper>

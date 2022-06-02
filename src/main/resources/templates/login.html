@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script type="text/javascript" th:src="@{/js/jquery-1.8.2.min.js}"></script>
+    <title>ZOOM平台登录</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+        }
+
+        .cms_login {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            background-repeat: no-repeat;
+            background-image: url("[[@{/}]]images/login3.jpg");/*!*[[@{/}]]img/timg.jpg*!*/
+            background-color: #1a6dff;
+            background-size: 100% 100%;
+        }
+
+        .flexCenter {
+            text-align: center;
+            margin: auto;
+        }
+
+        .cms_login_container {
+            width: 70%;
+            height: 70%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .cms_login_image {
+            width: 60%;
+            height: 100%;
+        }
+
+        .cms_login_from {
+            width: 40%;
+            height: 100%;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px #ccc;
+        }
+
+        /* .cms_login_container {
+            width: 30%;
+            height: 70%;
+            border: 1px solid red;
+        } */
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .divBox {
+            display: flex;
+            justify-content: center;
+            width: 80%;
+            height: 46px;
+            margin-top: 20px;
+            margin-left: 10%;
+            position: relative;
+        }
+
+        .cms_login_logo {
+            display: flex;
+            justify-content: center;
+            width: 80%;
+            height: 60px;
+            /* border: 1px solid green; */
+            margin-left: 10%;
+            margin-bottom: 22px;
+            margin-top: 25px;
+        }
+
+        .cms_login_img {
+            width: 44px;
+            height: 44px;
+            position: absolute;
+            top: 1px;
+            left: 1px;
+        }
+
+        .cms_login_ipt {
+            width: 100%;
+            outline: none;
+            padding-left: 50px;
+        }
+
+        .cms_login_ipt60 {
+            width: 60%;
+            outline: none;
+            padding-left: 50px;
+        }
+
+        .cms_login_ver {
+            width: 30%;
+            outline: none;
+            margin-left: 8%;
+            border: 1px solid #c32c2c;
+            background-color: #bd7070;
+            line-height: 46px;
+            letter-spacing: 4px;
+            border-radius: 4px;
+            cursor: default;
+            color: white;
+        }
+
+        .margin_top60 {
+            margin-top: 40px;
+        }
+
+        .login_btn {
+            width: 100%;
+            height: 60px;
+            letter-spacing: 10px;
+            font-size: 24px;
+            background-color: green;
+            border: none;
+            outline: none;
+            border-radius: 10px;
+            color: white;
+        }
+
+        .login_btn:hover {
+            background-color: #044468;
+            border: none;
+            outline: none;
+        }
+    </style>
+
+
+</head>
+<body><!--th:style="'background:url('+ @{/images/login3.JPG}+')50% 0 no-repeat;'"-->
+<div class="cms_login" ><!--th:style="'background:url('+ @{/images/login3.JPG}+');'">-->
+    <div class="cms_login_container flexCenter" style="min-height:390px;">
+        <div class="/cms_login_image" style="min-width: 380px;">
+            <!-- <img src="./leftimg_04.png" alt=""> -->
+        </div>
+        <div class="cms_login_from" style="min-width: 380px;">
+            <form name="cc" id="formid" method="post">
+                <div class="cms_login_logo"><span style="font-size:24px;">登录</span></div><!--     -->
+                <div class="divBox"> <img class="cms_login_img" th:src="@{images/username_mark.png}">
+                    <input class="cms_login_ipt" type="text" placeholder="请输入账号"  name="username" id="cms_login_username"></div>
+                <div class="divBox"> <img class="cms_login_img" src="images/password_mark.png">
+                    <input type="password" placeholder="请输入密码" class="cms_login_ipt" name="password" id="cms_login_passward"></div>
+
+                <div class="divBox margin_top60" style="border:none;">
+                    <input class="login_btn" type="submit" value="登录" id="submitid" name="submit">
+                </div>
+                <div class="divBox margin_top60">
+                    <a class="txt2" th:href="@{/registerPage}">还没有账号？立即注册</a>
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+<script src="js/jquery-1.12.4.js"></script>
+
+<script type="text/javascript" th:inline="javascript">
+    $("#submitid").click(function () {
+        $.ajax({
+            type:"POST",
+            url:"/userLogin",
+            dataType:"json",
+            data:$("#formid").serialize(),
+            success:function (data) {
+                if (data>0){
+                    window.location.href="/homepage";
+                }else {
+                    alert("用户名或密码错误,请重新输入！");
+                }
+            }
+        })
+        return false;
+})
+
+</script>
+<script type="text/javascript">
+    // 随机验证码
+    var m = parseInt(Math.random(0, 9) * (9999 - 1000) + 1000);
+    var n = $(".cms_login_ver").text(m);
+    // 原生获取文本内容
+    // var n = document.getElementsByClassName("cms_login_ver")[0].innerHTML;
+    // console.log(n)
+    // 点击按钮判断账户密码
+    /*   function(){
+         alert($(".cms_login_ver").text())
+         document.getElenmentById("yan1").value=$(".cms_login_ver").text();
+     }   */
+
+
+    /* var username = $("#cms_login_username").val();
+    var password = $("#cms_login_passward").val(); */
+    /* $(".login_btn").click(function () { */
+
+    /* alert($("#cms_login_ver_ipt").val())
+    alert($(".cms_login_ver").text()) */
+    /*  var yanz=$(".cms_login_ver").text();
+     if($("#cms_login_ver_ipt").val()!=$(".cms_login_ver").text()){
+         alert("验证码错误！请重新输入")
+
+     }else{
+     } */
+
+    /* document.getElenmentById("yan1").value=$(".cms_login_ver").text();
+    document.cc.submit();
+    })*/
+    /*  var ver = $("#cms_login_ver_ipt").val(); */
+
+    // console.log(typeof username)
+    // console.log(ver)
+    // 判断用户账户是不是能够转换成number类型，能，是false，不是true
+    /* if (!isNaN(username)&&username=="123") {
+        // alert("用户账户长度" + username.length)
+        // 判断用户密码是不是能够转换成number类型，能，是false，不是true
+        if (!isNaN(password)&&password=="123") {
+            console.log("用户密码长度" + password.length)*/
+    // 判断用户输入得验证码
+
+    /* var n = $(".cms_login_ver").text() */
+
+    // console.log(ver)
+    /*   if (n == ver) {
+          alert("用户登录成功，等待跳转")
+
+      } else {
+          alert("验证码输入错误")
+      } */
+    /*  } else {
+        alert("密码输入错误")
+    }
+} else {
+    alert("账号输入错误")
+}
+console.log(username) */
+    /*    })  */
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,435 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/base.css}" >
+    <link rel="stylesheet" type="text/css" th:href="@{/css/index.css}" >
+    <link rel="stylesheet" type="text/css" th:href="@{/css/layout.css}" >
+    <script type="text/javascript" th:src="@{/js/jquery-1.8.2.min.js}" ></script>
+    <title>ZOOM ZOOM</title>
+</head>
+<body>
+<div id="header">
+    <div class="top">
+        <div class="wrap clearfix"><!--  <a href="#" class="logo left"><img src="images/hu3.png"/></a>  -->
+            <div class="nav left dInline" id="headerMenu">
+                <a  href="#">首页</a><!-- class="on" -->
+                <a href="about.html">关于ZOOM-ZOOM</a>
+                <a th:if="${session.username}!='admin'" id="personid">个人中心</a>
+                <a th:if="${session.username}=='admin'" id="personid">管理中心</a>
+
+            </div>
+            <div>
+                <span class="right" id="rightMenuHtml" th:if="${session.username}==null">
+					<a th:href="@{/login}" class="b-login" id="b-login">登录</a>|<a th:href="@{/registerPage}" id="b-regist">注册</a>&nbsp;
+	                </span>
+                <span class="right" id="rightMenuHtml" th:if="${session.username}!=null" th:text="欢迎你+','+${session.username}"></span>
+            </div>
+        </div>
+    </div>
+     <div class="head-search">
+    <div class="wrap clearfix">
+        <form action="${pageContext.request.contextPath}/carQuery" method="get" >
+            <div class="yjxj clearfix left" ><!--action="/index/keyword/" method="post"  enctype="multipart/form-data" -->
+                <input type="text" id="search" name="search" placeholder="输入以搜索" class="left" />
+                <input type="submit" value="搜 索" class="right" />
+            </div>
+        </form>
+        <div class="hotWords left dInline"> 热门品牌：<a href="#">马自达3</a><a href="#">梅赛德斯-AMG G63</a><a href="#">奔驰E级</a><a href="#">奥迪A4L</a><a href="#">奔驰C级</a> </div>
+    </div>
+</div>
+</div>
+<style type="text/css">
+    #banner .prevs,#banner .nexts{position:absolute;top:220px;z-index: 100;margin-top:-25px;}
+    #banner .nexts{right:0;}
+    #banner .banShow a{display:block;width: 100%;height:465px;}
+</style>
+<div id="banner">
+    <div class="banShow clearfix" style="width:100%;">
+        <a><img alt="" src="/images/fengmian.jpg" style="width:100%;height:100%;"></a>
+    </div>
+
+    <div class="searchBox">
+
+        <div class="xnrj">
+
+            <form class="clearfix" th:action="@{/findCarByCondition}" method="get" enctype="multipart/form-data">
+                <input type="text" maxlength="" name="brandname" placeholder="输入品牌搜索" class="left" />
+                <input type="hidden" name="condition" value="1">
+                <input type="submit" value="" class="right" />
+            </form></div>
+    </div>
+
+</div>
+
+<div id="choose-nav">
+
+    <div class="wrap clearfix">
+        <!-- 品牌 -->
+        <div class="item-brand c-item">
+            <!--   <div class="trigger-icon"></div> -->
+            <!-- <div class="brand-wrapper"> -->
+            <div class="hd cBlue">品牌</div>
+            <!--  <div class="bd clearfix">    condition -->
+            <a th:href="@{/findCarByCondition(brandname='奥迪',condition=1)}" class="brand-item" target="_blank"><img th:src="@{/images/55a46160eac22.png}"  alt="奥迪"><span>奥迪</span></a>
+            <a th:href="@{/findCarByCondition(brandname='奔驰',condition=1)}" class="brand-item" target="_blank"><img th:src="@{/images/55a4613f6aab9.png}"  alt="奔驰"><span>奔驰</span></a>
+            <a th:href="@{/findCarByCondition(brandname='宝马',condition=1)}" class="brand-item" target="_blank"><img th:src="@{/images/55c8639f1aa89.png}"  alt="宝马"><span>宝马</span></a>
+            <a th:href="@{/findCarByCondition(brandname='路虎',condition=1)}" class="brand-item" target="_blank"><img th:src="@{/images/567a3b2190d9f.png}"  alt="路虎"><span>路虎</span></a>
+            <a th:href="@{/findCarByCondition(brandname='丰田',condition=1)}" class="brand-item" target="_blank"><img th:src="@{/images/55a4afc65ed32.png}"  alt="丰田"><span>丰田</span></a>
+            <a th:href="@{/findCarByCondition(brandname='大众',condition=1)}" class="brand-item" target="_blank"><img th:src="@{/images/55a34e9dcd43a.png}"  alt="大众"><span>大众</span></a>
+        </div>
+        <!-- 车型 -->
+        <div id="choose_model" class="item-model c-item">
+            <!--  <div class="trigger-icon"></div> -->
+            <!-- <div class="model-wrapper"> -->
+            <div class="hd cBlue">车型</div>
+            <div class="bd">
+                <a th:href="@{/findCarByCondition(brandname='小型',condition=2)}" class="model-item" target="_blank">
+                    <div class="car-modal-img modal-tinyCar"></div>
+                    <span class="car-modal-name">小型</span></a>
+                <a th:href="@{/findCarByCondition(brandname='轿车',condition=2)}" class="model-item" target="_blank">
+                    <div class="car-modal-img modal-PremiumMidsize"></div>
+                    <span class="car-modal-name">轿车</span></a>
+                <a th:href="@{/findCarByCondition(brandname='跑车',condition=2)}" class="model-item" target="_blank">
+                    <div class="car-modal-img modal-SportsCar"></div>
+                    <span class="car-modal-name">跑车</span></a>
+                <a th:href="@{/findCarByCondition(brandname='SUV',condition=2)}" class="model-item" target="_blank">
+                    <div class="car-modal-img modal-SUV"></div>
+                    <span class="car-modal-name">SUV</span></a>
+                <a th:href="@{/findCarByCondition(brandname='MPV',condition=2)}" class="model-item" target="_blank">
+                    <div class="car-modal-img modal-MPV"></div>
+                    <span class="car-modal-name">MPV</span></a>
+            </div>
+            <!-- </div> -->
+        </div>
+        <!-- 价格 -->
+        <div class="item-price">
+            <div class="hd cBlue">价格</div>
+            <div class="bd">
+                <a target="_blank" th:href="@{/findCarByCondition(brandname='30万以下',condition=3)}" class="price-item" style="width:auto">30万以下</a>
+                <a target="_blank" th:href="@{/findCarByCondition(brandname='30-50万',condition=3)}" class="price-item" style="width:auto">30-50万</a>
+                <a target="_blank" th:href="@{/findCarByCondition(brandname='50-100万',condition=3)}" class="price-item" style="width:auto">50-100万</a>
+                <a target="_blank" th:href="@{/findCarByCondition(brandname='100万以上',condition=3)}" class="price-item" style="width:auto">100万以上</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- </div> -->
+<div id="main">
+    <div class="main-a mDiv" id="box1">
+        <div class="wrap">
+            <div class="in-tit clearfix">
+                <h1 class="left dInline"> 热门车型 </h1>
+                <!--<div class="end-time right dInline">
+                            距离结束只剩下<b>20</b>小时<b>50</b>分<b>18</b>秒
+                        </div>-->
+            </div>
+            <div class="inBox clearfix">
+                <div class="thPic left dInline pve tBox"> <a href="#"  target="_blank"> <img src="/images/lqs9.jpg" class="imgVt" style="height:470px;"/><!-- <span class="icon icon_hd"></span> --></a> </div>
+                <div class="tBox right pve dInline thPicRight">
+                    <div class="thPic1 left dInline pve">
+                        <ul class="clearfix">
+                            <!--<a href="${pageContext.request.contextPath}/carQuery?brandname=mazda301&condition=2" target="_blank">
+                            -->
+                            <li class="pve"> <a th:href="@{/carQuery(carId='mazda301',username=${session.username})}" target="_blank"> <!-- <span class="icon icon_th"></span> -->
+                                <div class="car-pic"> <img src="/images/lqs3.png" /> </div>
+                                <div class="price">  <span class="num nBlue">11.59 </span> <font>&nbsp;&nbsp;万元起</font> </div>
+                                <p>MAZDA3 1.5L MT 质美版</p>
+                            </a>
+                            </li>
+
+                            <li class="pve"> <a th:href="@{/carQuery(carId='benzG6301',username=${session.username})}"  target="_blank"> <!-- <span class="icon icon_th"></span> -->
+                                <div class="car-pic"> <img src="/images/lqs4.png" style="width:186px;"/> </div>
+                                <div class="price"><span class="num nBlue">245.8 </span> <font>&nbsp;&nbsp;万元起</font> </div>
+                                <p>梅赛德斯-AMG G 63</p>
+                            </a></li>
+
+                            <li class="pve"> <a th:href="@{/carQuery(carId='bmw401',username=${session.username})}" target="_blank"> <!-- <span class="icon icon_th"></span> -->
+                                <div class="car-pic"> <img src="/images/lqs5.png"  style="width:207px;"/> </div>
+                                <div class="price"><span class="num nBlue">36.38 </span> <font>&nbsp;&nbsp;万元起</font> </div>
+                                <p>全新BMW 4系双门轿跑</p>
+                            </a></li>
+
+                            <li class="pve"> <a th:href="@{/carQuery(carId='audi801',username=${session.username})}" target="_blank"> <!-- <span class="icon icon_th"></span> -->
+                                <div class="car-pic"> <img src="/images/lqs8.png" style="width:186px;"/> </div>
+                                <div class="price"><span class="num nBlue">85.88 </span> <font>&nbsp;&nbsp;万元起</font> </div>
+                                <p>奥迪A8L</p>
+                            </a></li>
+
+                        </ul>
+                    </div>
+                    <img src="">
+                    <div class="pve right dInline hdPic">
+                        <a href="pp96_/ord/sta.html"  target="_blank"> <img src="/images/lil.jpg" class="imgVt" style="height:470px;"/> <!-- <span class="icon icon_hd"></span> --></a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="mDiv main-a">
+        <div class="wrap">
+            <div class="in-tit clearfix">
+                <h1 class="left dInline"> 汽车资讯 </h1>
+            </div>
+            <div class="in-news clearfix">
+                <div class="new-left dInline left">
+                    <h3>新闻中心</h3>
+                    <div class="clearfix">
+                        <div class="new-dl left dInline"> <a href="#" class='aImg'><img src="/images/autodrive.jpg"  width='262' height='170' /></a>
+                            <ul>
+                                <li>·<a href="#">自动驾驶的昨天、今天和明天</a></li>
+                                <li>·<a href="#">经典与未来交织，实拍全新电动悍马</a></li>
+                                <li>·<a href="#">坦克平台“三把锁”的硬核实力</a></li>
+                                <li>·<a href="#">续航接近无限 远程星瀚H重卡发布</a></li>
+                                <li>·<a href="news1.html">城市道路越堵越省油 WEY拿铁亮相</a></li>
+                            </ul>
+                            <!-- <a style="float:right" href="#" target="_blank">更多>></a> -->
+                        </div>
+                        <div class="new-dl right dInline"> <a href="#" class='aImg'><img src="/images/futurecar.jpg"  width='262' height='170' /></a>
+                            <ul>
+                                <li>·<a href="#">汽车的未来，未来的汽车</a></li>
+                                <li>·<a href="#">“氢+电”前瞻技术亮相进博会</a></li>
+                                <li>·<a href="#">最概念的量产车 高合HiPhi Z发布</a></li>
+                                <li>·<a href="#">MPV车型到底该怎么选择</a></li>
+                                <li>·<a href="#">欲2035年实现所有新轻型车零排放</a></li>
+                            </ul>
+                            <!-- <a style="float:right" href="#" target="_blank">更多>></a> -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nKe left dInline">
+                    <div class="kTit">
+                        <h2>精彩活动</h2>
+                    </div>
+                    <div class="slide">
+                        <div class="hd"> <a class="prev"><img src="/images/in_l.jpg"/></a>
+                            <ul>
+                                <li>1</li>
+                                <li>2</li>
+                                <li>3</li>
+                            </ul>
+                            <a class="next"><img src="/images/in_r.jpg"/></a></div>
+                        <div class="bd">
+                            <ul>
+                                <li class="clearfix">
+                                    <div class="bd-dl"> <img src="/images/jchd1.jpg" width="242" height="170" />
+                                        <h4>百年路 越己魂 </h4>
+                                        <p>马自达经典车型及100周年特别纪念款车型亮相北京国际车展</p>
+                                        <div align="right"> <a href="https://www.mazda.com.cn/news_sns/2654" class="cMore">查看详情</a> </div>
+                                    </div>
+
+                                    <div class="bd-dl"> <!-- <a href="#" class="aImg"> --> <img src="/images/jchd2.jpg" width="242" height="170" /> <!-- </a> -->
+                                        <h4>征战2016CTCC中国房车锦标赛</h4>
+                                        <p>一路领跑，勇夺冠军！为马自达捧回了参加CTCC以来的首个冠军奖杯。</p>
+                                        <div align="right"> <a href="https://mp.weixin.qq.com/s?__biz=MjM5NTUzNTg0NA==&mid=2712707507&idx=1&sn=28c1e5c6d0844ecbbd729faf94a8aaa4&chksm=82b30f38b5c4862e8fdbaa17dd10ad80460d2239f43afa2b4c6c3ed72ee003005574b4a2bad3&scene=0#wechat_redirect" class="cMore">查看详情</a> </div>
+                                    </div>
+                                </li>
+
+                                <li class="clearfix">
+                                    <div class="bd-dl"><img src="/images/jchd3.jpg" width="242" height="170" />
+                                        <h4>VISION COUPE概念车亮相上海车展</h4>
+                                        <p>对于造车永葆热忱，始终秉承独创之道与匠人之心，竭力探索技艺突破的马自达展出次世代设计愿景车型“MAZDA VISION COUPE”概念车。</p>
+                                        <div align="right"> <a href="https://www.mazda.com.cn/news_sns/2188" class="cMore">查看详情</a> </div>
+                                    </div>
+                                    <div class="bd-dl"> <img src="/images/jchd4.jpg" width="242" height="170" />
+                                        <h4>勒芒夺冠30周年纪念</h4>
+                                        <p>30年前 Mazda 787B捧起勒芒冠军奖杯 成为首个获得勒芒冠军的亚洲汽车制造商</p>
+                                        <div align="right"> <a href="#" class="cMore">查看详情</a> </div>
+                                    </div>
+
+                                </li>
+
+                                <li class="clearfix">
+                                    <div class="bd-dl">  <img src="/images/jchd5.jpg" width="242" height="170" />
+                                        <h4>中国汽车拉力锦标赛(CRC)赛事活动</h4>
+                                        <p>中国汽车拉力锦标赛China Rally Championship该赛事自1999年开始正式举办，是国内级别最高、规模最大的汽车赛事之一。</p>
+                                        <div align="right"> <a href="#" class="cMore">查看详情</a> </div>
+                                    </div>
+
+                                    <div class="bd-dl"> <img src="/images/jchd6.jpg" width="242" height="170" />
+                                        <h4>青藏川藏   曲水流觞</h4>
+                                        <p>在我们2年的发展历程中，与很多朋友结下了缘分，这些朋友大多成为了我们的车主和会员，他们有着不同的人生经历，用各自的方式追寻着</p>
+                                        <div align="right"> <a href="#" class="cMore">查看详情</a> </div>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--底部的开始-->
+<div id="footer">
+    <div class="foot-a1">
+        <div class="wrap">
+            <ul class="clearfix">
+                <li> <img src="/images/db1.png"/>
+                    <p>365项检测认证</p>
+                </li>
+                <li> <img src="/images/db2.png"/>
+                    <p>5000公里无需保养</p>
+                </li>
+                <li> <img src="/images/db3.png"/>
+                    <p>1年或两万公里无忧质保</p>
+                </li>
+                <li> <img src="/images/db4.png"/>
+                    <p>7天无忧退换</p>
+                </li>
+                <li> <img src="/images/db5.png"/>
+                    <p> 置换有增值</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="foot-a" align="center">
+        <div class="wrap clearfix">
+            <div class="fDl left dInline "> <strong>我们承诺</strong>
+                <ul>
+                    <li><a href="#">365项严苛检测</a></li>
+                    <li><a href="#">5000公里无需保养</a></li>
+                    <li><a href="#">一年或两万公里质保</a></li>
+                    <!-- <li><a href="#">7天退换</a></li> -->
+                </ul>
+            </div>
+            <div class="fDl left dInline "> <strong>买车指南</strong>
+                <ul>
+                    <li><a href="#" target="_blank">买者注意事项</a></li>
+                    <li><a href="#" target="_blank">常见的陷阱</a></li>
+                    <li><a href="#" target="_blank">小窍门</a></li>
+                    <!-- <li><a href="#" target="_blank">像初恋一样爱它，该给它怎</a></li>
+                    <li><a href="#" target="_blank">常开车不等于会开车 你的</a></li> -->
+                </ul>
+            </div>
+            <div class="fDl left dInline "> <strong>售后服务</strong>
+                <ul>
+                    <li><a href="#">24小时道路救援</a></li>
+                    <!-- <li><a href="#">豪车凹陷修复</a></li> -->
+                    <li><a href="#">定期上门维修保养服务</a></li>
+                    <li><a href="#">预约保养</a></li>
+                </ul>
+            </div>
+            <div class="fDl left dInline "> <strong>关于ZOOM车行</strong>
+                <ul>
+                    <!-- <li><a href="#" target="_blank">亿金动态</a></li> -->
+                    <!-- <li><a href="#" target="_blank">亿金荣誉</a></li> -->
+                    <li><a href="#" target="_blank">ZOOM优势</a></li>
+                    <li><a href="#" target="_blank">联系我们</a></li>
+                    <li><a href="#" target="_blank">评估团队</a></li>
+                </ul>
+            </div>
+            <div class="fDl left dInline "> <strong>ZOOM车行文化</strong>
+                <ul>
+                    <li><a href="#">中原文化</a></li>
+                    <li><a href="#">立天下</a></li>
+                    <li><a href="#">改变、规范、引领一方市场</a></li>
+                    <!-- <li><a href="#">颠覆中原人购车理念</a></li> -->
+                </ul>
+            </div>
+            <div class="fDl left dInline fDl1">
+                <!-- <div class="dLx"> <img src="images/dLx.jpg"/> </div> -->
+                <div style="height:50px;"></div>
+            </div>
+        </div>
+    </div>
+    <div style=margin-top:10px;> <!-- class="foot-b"   -->
+        <div align="center" >
+            Copyright © 2021 qcauto All Rights Reserved 苏州ZOOM—ZOOM汽车有限公司 版权所有 苏ICP备04101207号<br/>
+            地址：苏州市工业园区苏州中心店 服务热线：400-888-6666<br/>
+        </div>
+
+    </div>
+</div>
+<!--底部的结束-->
+<!--右侧内容的开始-->
+<div id="miniBus" style="right:-270px;">
+    <div class="mini-bar">
+        <div class="mini-barlist">
+            <ul>
+                <div class="mini-mi shopping">
+                    <a type="s" id="cid"  onclick="collect()">
+                        <input type="hidden" id="username" th:value="${session.username}">
+                        <input type="hidden" id="phone" th:value="${session.user?.phone}">
+                        <i class="mini-ease" style="color: #e8e8e8">我的收藏</i>
+                    </a>
+                    <li class="callItem"></li>
+                </div>
+                <div class="mini-mi shopping">
+                    <a th:href="@{/contrast}">
+                        <i class="mini-ease" style="color: #e8e8e8">对比车辆</i>
+                        <abbr id="Dbnumber" th:text="${session.contrastCarSize}"></abbr>
+                    </a>
+                </div>
+            </ul>
+        </div>
+        <a class="mini-gotop"></a>
+        <a class="wx1"><img src="/images/wx_1.png"></a>
+        <div class="wmImg hide">
+            <img src="/images/wx_2.png">
+        </div>
+    </div>
+     <div class="mini-cont">
+    </div>
+</div>
+<!--右侧内容的结束-->
+<script type="text/javascript" th:inline="javascript">
+    $("#cid").click(function () {
+        var username = $("#username").val();
+        if (username==null||username==""){
+            alert("请登录后查看！");
+            window.location.href="/login";
+            return false;
+        }else {
+            window.location.href="/collectPage?username="+username;
+            /*$.ajax({
+                type: "POST",
+                url: "/collectPage",
+                //async:true,
+                //dataType: "json",
+                data: {username: username},
+                success: function (data) {
+                    //document.write(data);//data里的数据为html代码
+                    window.location.href="/collectPage"
+                },
+                error:function () {
+                    alert("失败")
+                }
+            })*/
+        }
+    })
+//个人中心判断
+    $("#personid").click(function () {
+        var username = $("#username").val();
+        var phone = $("#phone").val();
+        if (username==null||username==""){
+            alert("请登录后查看！");
+            window.location.href="/login";
+            return false;
+        }else {
+            window.location.href="/personalPage";
+            /*$.ajax({
+                type: "POST",
+                url: "/personalPage",
+                data: {username: username},
+                success: function (data) {
+                   // document.write(data);//data里的数据为html代码
+                    window.location.href="/personalPage?username="+username;
+                },
+                error:function () {
+                    alert("失败")
+                }
+            })*/
+        }
+    })
+</script>
+
+</body>
+</html>
